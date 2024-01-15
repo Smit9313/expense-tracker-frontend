@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 
 import ECommerce from './pages/Dashboard/ECommerce';
@@ -12,9 +12,14 @@ const DefaultLayout = lazy(() => import('./layout/DefaultLayout'));
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate("auth/signin");
+    }
   }, []);
 
   return loading ? (
