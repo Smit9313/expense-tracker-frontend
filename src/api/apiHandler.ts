@@ -11,3 +11,15 @@ export function registerUser(data: {
 }) {
   return axiosClient.post("user/register", data);
 }
+
+export function getExpenseCategory(data: any) {
+  return axiosClient.get("expenseCategory/getExpenseCategory", data);
+}
+
+export function createExpenseCategory(data: { name: string }) {
+  return axiosClient.post("expenseCategory/createExpenseCategory", data);
+}
+
+export function deleteExpenseCategory(data: { expenseCategoryId : string}){
+  return axiosClient.post("expenseCategory/deleteExpenseCategory", data);
+}

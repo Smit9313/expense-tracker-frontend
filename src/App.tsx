@@ -20,7 +20,7 @@ function App() {
     if (!token) {
       navigate("auth/signin");
     }else{
-      navigate("/");
+      // navigate("/");
     }
   }, []);
 
