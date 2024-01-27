@@ -9,6 +9,7 @@ const Settings = lazy(() => import('../pages/Settings'));
 const Tables = lazy(() => import('../pages/Tables'));
 const Alerts = lazy(() => import('../pages/UiElements/Alerts'));
 const Buttons = lazy(() => import('../pages/UiElements/Buttons'));
+const ExpenseList = lazy(() => import('../pages/Expense'))
 
 const coreRoutes = [
   {
@@ -55,6 +56,11 @@ const coreRoutes = [
     path: '/ui/buttons',
     title: 'Buttons',
     component: Buttons,
+  },
+  {
+    path: '/expenses',
+    title: 'Buttons',
+    component: ExpenseList,
   },
 ];
 

@@ -161,3 +161,26 @@ span.flatpickr-weekday,
 [x-cloak] {
   display: none !important;
 }
+
+/* Add this CSS to your stylesheet */
+/* Style the height of the scrollbar */
+::-webkit-scrollbar {
+  width: 5px; /* Adjust the width as needed */
+  height: 5px; /* Adjust the height as needed */
+}
+
+/* Track styles */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Adjust the background color */
+}
+
+/* Handle styles */
+::-webkit-scrollbar-thumb {
+  background: #888; /* Adjust the handle color */
+  border-radius: 5px; /* Adjust the border radius */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Adjust the handle color on hover */
+}
