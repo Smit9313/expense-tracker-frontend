@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { login } from '../../api/apiHandler';
+import toast from 'react-hot-toast';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -23,6 +24,9 @@ const SignIn = () => {
         localStorage.setItem("token", res.data.token);
         navigate("/")
       }
+    }).catch(err => {
+      console.log(err)
+      toast.error(err.response.data.message)
     })
   }
 
@@ -175,7 +179,7 @@ const SignIn = () => {
                   </label>
                   <div className="relative">
                     <input
-                      type="email"
+                      type="text"
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                       {...register("email")}
