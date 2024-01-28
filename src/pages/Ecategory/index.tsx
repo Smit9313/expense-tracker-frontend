@@ -34,7 +34,7 @@ const Ecategory = () => {
 	const handleOk = () => {
 		if (curId) {
 			deleteExpenseCategory({ expenseCategoryId: curId }).then(res => {
-				if(res.status == 204){
+				if (res.status == 204) {
 					setCurId("");
 					toast.success("deleted...")
 				}
@@ -62,7 +62,7 @@ const Ecategory = () => {
 			key: 'action',
 			render: (_, record: any) => (
 				<div className="flex items-center space-x-3.5">
-					<button className="hover:text-primary">
+					<button className="hover:text-primary" onClick={() => navigate(`/Ecategory/edit/${record._id}`)}>
 						<svg
 							className="fill-current"
 							width="18"

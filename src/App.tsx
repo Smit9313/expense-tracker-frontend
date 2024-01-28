@@ -29,7 +29,7 @@ function App() {
   ) : (
     <>
       <Toaster
-        position="top-right"
+        position="top-center"
         reverseOrder={false}
         containerClassName="overflow-auto"
       />

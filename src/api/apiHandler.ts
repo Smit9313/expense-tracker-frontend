@@ -13,13 +13,33 @@ export function registerUser(data: {
 }
 
 export function getExpenseCategory(data: any) {
-  return axiosClient.get("expenseCategory/getExpenseCategory", data);
+  return axiosClient.post("expenseCategory/getExpenseCategory", data);
 }
 
 export function createExpenseCategory(data: { name: string }) {
   return axiosClient.post("expenseCategory/createExpenseCategory", data);
 }
 
+export function editExpenseCategory(data: { expenseCategoryId : string | undefined, name: string}){
+  return axiosClient.post("expenseCategory/editExpenseCategory", data);
+}
+
 export function deleteExpenseCategory(data: { expenseCategoryId : string}){
   return axiosClient.post("expenseCategory/deleteExpenseCategory", data);
+}
+
+export function getIncomeCategory(data: any) {
+  return axiosClient.post("incomeCategory/getIncomeCategory", data);
+}
+
+export function deleteIncomeCategory(data: { incomeCategoryId : string}){
+  return axiosClient.post("incomeCategory/deleteIncomeCategory", data);
+}
+
+export function createIncomeCategory(data: { name: string }) {
+  return axiosClient.post("incomeCategory/createIncomeCategory", data);
+}
+
+export function editIncomeCategory(data: { incomeCategoryId : string | undefined, name: string}){
+  return axiosClient.post("incomeCategory/editIncomeCategory", data);
 }
