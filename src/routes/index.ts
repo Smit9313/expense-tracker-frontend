@@ -10,6 +10,10 @@ const Tables = lazy(() => import('../pages/Tables'));
 const Alerts = lazy(() => import('../pages/UiElements/Alerts'));
 const Buttons = lazy(() => import('../pages/UiElements/Buttons'));
 const ExpenseList = lazy(() => import('../pages/Expense'))
+const AddExpense = lazy(() => import('../pages/Expense/AddExpense'))
+const EditExpense = lazy(() => import('../pages/Expense/EditExpense'))
+const IncomeList = lazy(() => import('../pages/Income'))
+const AddIncome = lazy(() => import('../pages/Income/AddIncome'))
 const Ecategory = lazy(()=> import('../pages/Ecategory'))
 const Icategory = lazy(()=> import('../pages/Icategory'))
 const AddExpenseCategory = lazy(()=> import('../pages/Ecategory/AddExpenseCategory'))
@@ -70,9 +74,24 @@ const coreRoutes = [
     component: ExpenseList,
   },
   {
+    path: '/expense/add',
+    title: 'Buttons',
+    component: AddExpense,
+  },
+  {
+    path: '/expense/edit/:id',
+    title: 'Buttons',
+    component: EditExpense,
+  },
+  {
     path: '/income',
     title: 'Buttons',
-    component: ExpenseList,
+    component: IncomeList,
+  },
+  {
+    path: '/income/add',
+    title: 'Buttons',
+    component: AddIncome,
   },
   {
     path: '/Ecategory',
@@ -104,8 +123,6 @@ const coreRoutes = [
     title: 'Buttons',
     component: EditIncomeCategory,
   },
-
-
 ];
 
 const routes = [...coreRoutes];

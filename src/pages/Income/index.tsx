@@ -3,7 +3,7 @@ import { Modal, Table, Tag } from 'antd';
 import type { TableProps } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { deleteExpense, getExpenses } from '../../api/apiHandler';
+import { deleteExpense, deleteIncome, getIncomes } from '../../api/apiHandler';
 import toast from 'react-hot-toast';
 
 interface DataType {
@@ -15,16 +15,16 @@ interface DataType {
 }
 
 
-const ExpenseList = () => {
+const IncomeList = () => {
 	const navigate = useNavigate();
-	const [expenses, setExpenses] = useState([]);
+	const [incomes, setIncomes] = useState([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [curId, setCurId] = useState("");
 
 	useEffect(() => {
-		getExpenses({}).then(res => {
+		getIncomes({}).then(res => {
 			if (res.status === 200) {
-				setExpenses(res.data)
+				setIncomes(res.data)
 			}
 		})
 	}, [curId])
@@ -36,7 +36,7 @@ const ExpenseList = () => {
 	const handleOk = () => {
 		if (curId) {
 			console.log(curId)
-			deleteExpense({ expenseId: curId }).then(res => {
+			deleteIncome({ incomeId: curId }).then(res => {
 				if (res.status == 204) {
 					setCurId("");
 					toast.success("deleted...")
@@ -90,7 +90,7 @@ const ExpenseList = () => {
 			key: 'action',
 			render: (_, record: any) => (
 				<div className="flex items-center space-x-3.5">
-					<button className="hover:text-primary" onClick={() => navigate(`/expense/edit/${record._id}`)}>
+					<button className="hover:text-primary" onClick={() => navigate(`/Icategory/edit/${record._id}`)}>
 						<svg
 							className="fill-current"
 							width="18"
@@ -141,14 +141,14 @@ const ExpenseList = () => {
 		}
 	];
 
-	const data: DataType[] = expenses && expenses.map((val: any, index) => {
-		const updatedData = { date: val.expenseDate, category: val.expenseCategoryId.name, amount: val.expenseAmount, details: val.expenseDetails, _id: val._id, key: index }
+	const data: DataType[] = incomes && incomes.map((val: any, index) => {
+		const updatedData = { date: val.incomeDate, category: val.incomeCategoryId.name, amount: val.incomeAmount, details: val.incomeDetails, _id: val._id, key: index }
 		return updatedData
 	})
 
 	return (
 		<>
-			<Modal title="Are you sure you want to delete this expense?" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={
+			<Modal title="Are you sure you want to delete this income?" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={
 				<div className="flex justify-end gap-4.5">
 					<button
 						className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-black"
@@ -165,7 +165,7 @@ const ExpenseList = () => {
 				</div>
 			}>
 			</Modal>
-			<Breadcrumb pageName="Expense" />
+			<Breadcrumb pageName="Income" />
 			<div className="flex flex-col gap-10">
 				<div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
 					<Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} showHeader={true} title={() => {
@@ -176,7 +176,7 @@ const ExpenseList = () => {
 							<div className=''>
 								<button
 									className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-70"
-									onClick={() => navigate("/expense/add")}
+									onClick={() => navigate("/income/add")}
 								>
 									+ Add
 								</button>
@@ -189,4 +189,4 @@ const ExpenseList = () => {
 	)
 }
 
-export default ExpenseList
+export default IncomeList
