@@ -14,6 +14,7 @@ const AddExpense = lazy(() => import('../pages/Expense/AddExpense'))
 const EditExpense = lazy(() => import('../pages/Expense/EditExpense'))
 const IncomeList = lazy(() => import('../pages/Income'))
 const AddIncome = lazy(() => import('../pages/Income/AddIncome'))
+const EditIncome = lazy(() => import('../pages/Income/EditIncome'))
 const Ecategory = lazy(()=> import('../pages/Ecategory'))
 const Icategory = lazy(()=> import('../pages/Icategory'))
 const AddExpenseCategory = lazy(()=> import('../pages/Ecategory/AddExpenseCategory'))
@@ -92,6 +93,11 @@ const coreRoutes = [
     path: '/income/add',
     title: 'Buttons',
     component: AddIncome,
+  },
+  {
+    path: '/income/edit/:id',
+    title: 'Buttons',
+    component: EditIncome,
   },
   {
     path: '/Ecategory',

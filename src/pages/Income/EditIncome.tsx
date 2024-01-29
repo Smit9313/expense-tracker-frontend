@@ -1,41 +1,50 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumb';
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { createExpense, getExpenseCategory } from '../../api/apiHandler';
+import { editIncome, getIncomeCategory, getIncomes } from '../../api/apiHandler';
 import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 
-const AddExpense = () => {
+const EditIncome = () => {
 	const navigate = useNavigate();
-	const [expenseCategory, setExpenseCategory] = useState([]);
+	const { id } = useParams();
+	const [incomeCategory, setIncomeCategory] = useState([]);
+
+	const validationSchema = Yup.object().shape({
+		incomeDate: Yup.date().required("Date is required"),
+		incomeDetails: Yup.string().required("Details is required"),
+		incomeAmount: Yup.number().typeError('Amount is required').required("Amount is required"),
+		incomeCategoryId: Yup.string().required("Category is required")
+	});
+
+	const formOptions = { resolver: yupResolver(validationSchema) };
+	const { register, handleSubmit, formState, setValue } = useForm(formOptions);
+	const { errors } = formState;
 
 	useEffect(() => {
-		getExpenseCategory({}).then(res => {
+		getIncomeCategory({}).then(res => {
 			if (res.status === 200) {
-				setExpenseCategory(res.data)
+				setIncomeCategory(res.data)
+			}
+		})
+		getIncomes({ incomeId: id }).then(res => {
+			if (res.status === 200) {
+				setValue("incomeDate", res.data.incomeDate.split("T")[0])
+				setValue("incomeDetails", res.data.incomeDetails)
+				setValue("incomeAmount", res.data.incomeAmount)
+				setValue("incomeCategoryId", res.data.incomeCategoryId)
 			}
 		})
 	}, [])
 
 
-	const validationSchema = Yup.object().shape({
-		expenseDate: Yup.date().required("Date is required"),
-		expenseDetails: Yup.string().required("Details is required"),
-		expenseAmount: Yup.number().typeError('Amount is required').required("Amount is required"),
-		expenseCategoryId: Yup.string().required("Category is required")
-	});
-
-	const formOptions = { resolver: yupResolver(validationSchema) };
-	const { register, handleSubmit, formState } = useForm(formOptions);
-	const { errors } = formState;
-
-	const onSubmit = (data: { expenseDate: Date, expenseDetails: string, expenseAmount: number, expenseCategoryId: string }) => {
-		data.expenseDate.setDate(data.expenseDate.getDate() + 1)
-		createExpense(data).then(res => {
-			if (res.status === 201) {
-				toast.success("expense created...")
+	const onSubmit = (data: { incomeDate: Date, incomeDetails: string, incomeAmount: number, incomeCategoryId: string }) => {
+		data.incomeDate.setDate(data.incomeDate.getDate() + 1)
+		editIncome({...data, incomeId: id}).then(res => {
+			if (res.status === 200) {
+				toast.success("expense edited...")
 				navigate(-1)
 			}
 		}).catch(err => {
@@ -47,57 +56,57 @@ const AddExpense = () => {
 	return (
 		<>
 			<div className="mx-auto">
-				<Breadcrumb pageName="Add New Expense" />
+				<Breadcrumb pageName="Edit Income" />
 				<div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
 					<div className="p-7">
 						<form onSubmit={handleSubmit(onSubmit)}>
 							<div className="mb-5.5">
 								<label
 									className="mb-3 block text-sm font-medium text-black dark:text-white"
-									htmlFor="expenseDate"
+									htmlFor="incomeDate"
 								>
 									Date
 								</label>
 								<div className="relative">
 									<input
 										type="date"
-										id='expenseDate'
+										id='incomeDate'
 										className="custom-input-date custom-input-date-1 w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-										{...register("expenseDate")}
+										{...register("incomeDate")}
 									/>
-									{errors.expenseDate && <p className='text-orange-700'>{errors.expenseDate?.message}</p>}
+									{errors.incomeDate && <p className='text-orange-700'>{errors.incomeDate?.message}</p>}
 								</div>
 							</div>
 							<div className="mb-5.5">
 								<label
 									className="mb-3 block text-sm font-medium text-black dark:text-white"
-									htmlFor="expenseCategoryId"
+									htmlFor="incomeCategoryId"
 								>
-									Expense Category
+									Income Category
 								</label>
 								<select className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-4.5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input"
-									id='expenseCategoryId'
-									{...register("expenseCategoryId")}
+									id='incomeCategoryId'
+									{...register("incomeCategoryId")}
 								>
-									{expenseCategory && expenseCategory.map((val: any) => <option key={val._id} value={val._id}>{val.name}</option>)}
+									{incomeCategory && incomeCategory.map((val: any) => <option key={val._id} value={val._id}>{val.name}</option>)}
 								</select>
-								{errors.expenseCategoryId && <p className='text-orange-700'>{errors.expenseCategoryId?.message}</p>}
+								{errors.incomeCategoryId && <p className='text-orange-700'>{errors.incomeCategoryId?.message}</p>}
 							</div>
 							<div className="mb-5.5">
 								<label
 									className="mb-3 block text-sm font-medium text-black dark:text-white"
-									htmlFor="expenseAmount"
+									htmlFor="incomeAmount"
 								>
 									Amount
 								</label>
 								<input
 									className="w-full rounded border border-stroke py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
 									type="number"
-									id="expenseAmount"
+									id="incomeAmount"
 									placeholder="amount"
-									{...register("expenseAmount")}
+									{...register("incomeAmount")}
 								/>
-								{errors.expenseAmount && <p className='text-orange-700'>{errors.expenseAmount?.message}</p>}
+								{errors.incomeAmount && <p className='text-orange-700'>{errors.incomeAmount?.message}</p>}
 							</div>
 							<div className="mb-5.5">
 								<label
@@ -109,19 +118,16 @@ const AddExpense = () => {
 								<input
 									className="w-full rounded border border-stroke py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
 									type="text"
-									id="expenseDetails"
+									id="incomeDetails"
 									placeholder="detail"
-									{...register("expenseDetails")}
+									{...register("incomeDetails")}
 								/>
-								{errors.expenseDetails && <p className='text-orange-700'>{errors.expenseDetails?.message}</p>}
+								{errors.incomeDetails && <p className='text-orange-700'>{errors.incomeDetails?.message}</p>}
 							</div>
-
-
-
 							<div className="flex justify-end gap-4.5 mt-6">
 								<button
 									className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-									onClick={() => navigate("/expense")}
+									onClick={() => navigate("/income")}
 								>
 									Cancel
 								</button>
@@ -134,10 +140,9 @@ const AddExpense = () => {
 						</form>
 					</div>
 				</div>
-
 			</div>
 		</>
 	);
 };
 
-export default AddExpense;
+export default EditIncome;

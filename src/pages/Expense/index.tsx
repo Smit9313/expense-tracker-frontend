@@ -77,7 +77,8 @@ const ExpenseList = () => {
 			title: 'Amount',
 			dataIndex: 'amount',
 			key: 'amount',
-			render: (text) => <a>{text}</a>
+			render: (text) => <a>{text}</a>,
+			sorter: (a: any, b: any) => a.amount - b.amount,
 		},
 		{
 			title: 'Details',

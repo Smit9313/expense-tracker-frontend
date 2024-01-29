@@ -32,8 +32,8 @@ const AddExpense = () => {
 	const { errors } = formState;
 
 	const onSubmit = (data: { incomeDate: Date, incomeDetails: string, incomeAmount: number, incomeCategoryId: string }) => {
+		data.incomeDate.setDate(data.incomeDate.getDate() + 1)
 
-		console.log(data)
 		createIncome(data).then(res => {
 			if (res.status === 201) {
 				toast.success("income created...")
@@ -44,6 +44,7 @@ const AddExpense = () => {
 			toast.error(err.response.data.message)
 		})
 	}
+
 
 	return (
 		<>

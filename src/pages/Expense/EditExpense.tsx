@@ -41,7 +41,7 @@ const EditExpense = () => {
 
 
 	const onSubmit = (data: { expenseDate: Date, expenseDetails: string, expenseAmount: number, expenseCategoryId: string }) => {
-		console.log(data)
+		data.expenseDate.setDate(data.expenseDate.getDate() + 1)
 		editExpense({...data, expenseId: id}).then(res => {
 			if (res.status === 200) {
 				toast.success("expense edited...")

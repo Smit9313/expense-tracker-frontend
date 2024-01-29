@@ -90,6 +90,16 @@ export function createIncome(data: {
   return axiosClient.post("income/createIncome", data);
 }
 
+export function editIncome(data: {
+  incomeId: string | undefined,
+  incomeDate: Date;
+  incomeDetails: string;
+  incomeAmount: number;
+  incomeCategoryId: string;
+}){
+  return axiosClient.post("income/editIncome", data);
+}
+
 export function deleteIncome(data: { incomeId: string }) {
   return axiosClient.post("income/deleteIncome", data);
 }

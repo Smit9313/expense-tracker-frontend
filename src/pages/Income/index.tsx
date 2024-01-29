@@ -90,7 +90,7 @@ const IncomeList = () => {
 			key: 'action',
 			render: (_, record: any) => (
 				<div className="flex items-center space-x-3.5">
-					<button className="hover:text-primary" onClick={() => navigate(`/Icategory/edit/${record._id}`)}>
+					<button className="hover:text-primary" onClick={() => navigate(`/income/edit/${record._id}`)}>
 						<svg
 							className="fill-current"
 							width="18"
