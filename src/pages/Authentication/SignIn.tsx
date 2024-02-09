@@ -37,7 +37,7 @@ const SignIn = () => {
             <div className="py-17.5 px-26 text-center">
 
               <p className="2xl:px-20">
-                Smit Dudhat
+                {/* Smit Dudhat */}
               </p>
 
               <span className="mt-15 inline-block">
