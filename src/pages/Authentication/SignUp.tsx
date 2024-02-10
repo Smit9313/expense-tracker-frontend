@@ -2,8 +2,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { registerUser } from '../../api/apiHandler';
 import toast from 'react-hot-toast';
+
+import { registerUser } from '../../api/apiHandler';
 
 const SignUp = () => {
   const navigate = useNavigate();

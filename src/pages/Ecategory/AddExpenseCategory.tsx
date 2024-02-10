@@ -26,13 +26,11 @@ const AddExpenseCategory = () => {
         toast.error(res.data.message)
       }
     }).catch(err => {
-      console.log(err)
       toast.error(err.response.data.message)
     })
   }
 
   return (
-    <>
       <div className="mx-auto">
         <Breadcrumb pageName="Add New Expense Category" />
         <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -50,7 +48,7 @@ const AddExpenseCategory = () => {
                   type="text"
                   id="name"
                   placeholder="category name"
-                  autoFocus
+                  // autoFocus
                   {...register("name")}
                 />
                 {errors.name && <p className='text-orange-700'>{errors.name?.message}</p>}
@@ -58,6 +56,7 @@ const AddExpenseCategory = () => {
 
               <div className="flex justify-end gap-4.5">
                 <button
+                  type='button'
                   className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                   onClick={() => navigate("/Ecategory")}
                 >
@@ -65,6 +64,7 @@ const AddExpenseCategory = () => {
                 </button>
                 <button
                   className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
+                  type='submit'
                 >
                   Save
                 </button>
@@ -72,9 +72,7 @@ const AddExpenseCategory = () => {
             </form>
           </div>
         </div>
-
       </div>
-    </>
   );
 };
 
