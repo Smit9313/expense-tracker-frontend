@@ -150,7 +150,6 @@ const Ecategory = () => {
 							<div className=''>
 								<button
 									className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-70"
-									// type="submit"
 									onClick={() => navigate("/Ecategory/add")}
 								>
 									+ Add

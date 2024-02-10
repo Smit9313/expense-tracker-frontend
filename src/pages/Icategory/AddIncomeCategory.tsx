@@ -19,14 +19,15 @@ const AddIncomeCategory = () => {
 
   const onSubmit = (data: { name: string }) => {
     createIncomeCategory(data).then(res => {
-      if (res.status === 201) {
-        toast.success("category created...")
+      if (res.data.status) {
+        toast.success(res.data.message)
         navigate(-1)
+      } else {
+        toast.error(res.data.message)
       }
     }).catch(err => {
       console.log(err)
       toast.error(err.response.data.message)
-
     })
   }
 
@@ -57,12 +58,14 @@ const AddIncomeCategory = () => {
 
               <div className="flex justify-end gap-4.5">
                 <button
+                  type='button'
                   className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                   onClick={() => navigate("/Icategory")}
                 >
                   Cancel
                 </button>
                 <button
+                  type='submit'
                   className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
                 >
                   Save

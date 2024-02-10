@@ -12,7 +12,6 @@ interface DataType {
 	name: string;
 }
 
-
 const Icategory = () => {
 	const navigate = useNavigate();
 	const [incomeCategory, setIncomeCategory] = useState([]);
@@ -21,8 +20,8 @@ const Icategory = () => {
 
 	useEffect(() => {
 		getIncomeCategory({}).then(res => {
-			if (res.status === 200) {
-				setIncomeCategory(res.data)
+			if (res.data.status) {
+				setIncomeCategory(res.data.data)
 			}
 		})
 	}, [curId])
@@ -34,9 +33,11 @@ const Icategory = () => {
 	const handleOk = () => {
 		if (curId) {
 			deleteIncomeCategory({ incomeCategoryId: curId }).then(res => {
-				if (res.status == 204) {
+				if (res.data.status) {
 					setCurId("");
 					toast.success("deleted...")
+				}else{
+					toast.error(res.data.message)
 				}
 			}).catch(err => {
 				toast.error(err.response.data.error)
