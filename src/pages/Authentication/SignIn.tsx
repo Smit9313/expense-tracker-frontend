@@ -20,8 +20,8 @@ const SignIn = () => {
 
   const onSubmit = (data: { email: string, password: string }) => {
     login(data).then(res => {
-      if (res.status === 200) {
-        localStorage.setItem("token", res.data.token);
+      if (res.data.status) {
+        localStorage.setItem("token", res.data.data.token);
         navigate("/")
       }
     }).catch(err => {
@@ -30,7 +30,6 @@ const SignIn = () => {
   }
 
   return (
-    <>
       <div className="rounded-sm border m-8 border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
@@ -300,7 +299,6 @@ const SignIn = () => {
           </div>
         </div>
       </div>
-    </>
   );
 };
 

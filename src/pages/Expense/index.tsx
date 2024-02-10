@@ -23,8 +23,10 @@ const ExpenseList = () => {
 
 	useEffect(() => {
 		getExpenses({}).then(res => {
-			if (res.status === 200) {
-				setExpenses(res.data)
+			if (res.data.status) {
+				setExpenses(res.data.data)
+			}else{
+				setExpenses([])
 			}
 		})
 	}, [curId])
@@ -35,11 +37,12 @@ const ExpenseList = () => {
 
 	const handleOk = () => {
 		if (curId) {
-			console.log(curId)
 			deleteExpense({ expenseId: curId }).then(res => {
-				if (res.status == 204) {
+				if (res.data.status) {
 					setCurId("");
 					toast.success("deleted...")
+				}else{
+					toast.error(res.data.message)
 				}
 			}).catch(err => {
 				toast.error(err.response.data.error)
@@ -142,10 +145,10 @@ const ExpenseList = () => {
 		}
 	];
 
-	const data: DataType[] = expenses && expenses.map((val: any, index) => {
+	const data: DataType[] = expenses.length > 0 ? expenses.map((val: any, index) => {
 		const updatedData = { date: val.expenseDate, category: val.expenseCategoryId.name, amount: val.expenseAmount, details: val.expenseDetails, _id: val._id, key: index }
 		return updatedData
-	})
+	}) : []
 
 	return (
 		<>

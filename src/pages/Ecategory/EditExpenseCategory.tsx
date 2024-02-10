@@ -21,16 +21,16 @@ const EditExpenseCategory = () => {
 
 	useEffect(() => {
 		getExpenseCategory({ expenseCategoryId: id }).then(res => {
-			if (res.status === 200) {
-				setValue("name", res.data.name)
+			if (res.data.status) {
+				setValue("name", res.data.data.name)
 			}
 		})
 	})
 
 	const onSubmit = (data: { name: string }) => {
 		editExpenseCategory({ expenseCategoryId: id, ...data }).then(res => {
-			if (res.status === 200) {
-				toast.success("category updated...")
+			if (res.data.status) {
+				toast.success(res.data.message)
 				navigate(-1)
 			}
 		}).catch(err => {

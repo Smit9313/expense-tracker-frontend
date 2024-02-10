@@ -21,8 +21,8 @@ const Ecategory = () => {
 
 	useEffect(() => {
 		getExpenseCategory({}).then(res => {
-			if (res.status === 200) {
-				setExpenseCategory(res.data)
+			if (res.data.status) {
+				setExpenseCategory(res.data.data)
 			}
 		})
 	}, [curId])
@@ -34,9 +34,11 @@ const Ecategory = () => {
 	const handleOk = () => {
 		if (curId) {
 			deleteExpenseCategory({ expenseCategoryId: curId }).then(res => {
-				if (res.status == 204) {
+				if (res.data.status) {
 					setCurId("");
 					toast.success("deleted...")
+				}else{
+					toast.error(res.data.message)
 				}
 			}).catch(err => {
 				toast.error(err.response.data.error)

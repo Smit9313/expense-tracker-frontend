@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -6,7 +6,7 @@ import { registerUser } from '../../api/apiHandler';
 import toast from 'react-hot-toast';
 
 const SignUp = () => {
-
+  const navigate = useNavigate();
   const validationSchema = Yup.object().shape({
     username: Yup.string().required("Name is required"),
     email: Yup.string().email("Email is invalid").required("Email is required"),
@@ -21,8 +21,9 @@ const SignUp = () => {
   const onSubmit = (data: { username: string, email: string, password: string }) => {
     console.log(data)
     registerUser(data).then(res => {
-      if (res.status === 201) {
+      if (res.data.status) {
         toast.success(res.data.message)
+        navigate("/auth/signin")
       } else {
         toast.error(res.data.message)
       }

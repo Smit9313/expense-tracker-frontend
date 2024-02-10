@@ -19,14 +19,15 @@ const AddExpenseCategory = () => {
 
   const onSubmit = (data: { name: string }) => {
     createExpenseCategory(data).then(res => {
-      if (res.status === 201) {
-        toast.success("category created...")
+      if (res.data.status) {
+        toast.success(res.data.message)
         navigate(-1)
+      }else{
+        toast.error(res.data.message)
       }
     }).catch(err => {
       console.log(err)
       toast.error(err.response.data.message)
-
     })
   }
 
