@@ -1,11 +1,12 @@
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Breadcrumb from '../../components/Breadcrumb';
 import * as Yup from "yup";
+import toast from 'react-hot-toast';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+
 import { editExpense, getExpenseCategory, getExpenses } from '../../api/apiHandler';
-import toast from 'react-hot-toast';
-import { useEffect, useState } from 'react';
+import Breadcrumb from '../../components/Breadcrumb';
 
 const EditExpense = () => {
 	const navigate = useNavigate();
@@ -25,27 +26,28 @@ const EditExpense = () => {
 
 	useEffect(() => {
 		getExpenseCategory({}).then(res => {
-			if (res.status === 200) {
-				setExpenseCategory(res.data)
+			if (res.data.status) {
+				setExpenseCategory(res.data.data)
 			}
 		})
 		getExpenses({ expenseId: id }).then(res => {
-			if (res.status === 200) {
-				setValue("expenseDate", res.data.expenseDate.split("T")[0])
-				setValue("expenseDetails", res.data.expenseDetails)
-				setValue("expenseAmount", res.data.expenseAmount)
-				setValue("expenseCategoryId", res.data.expenseCategoryId)
+			if (res.data.status) {
+				setValue("expenseDate", res.data.data.expenseDate.split("T")[0])
+				setValue("expenseDetails", res.data.data.expenseDetails)
+				setValue("expenseAmount", res.data.data.expenseAmount)
+				setValue("expenseCategoryId", res.data.data.expenseCategoryId)
 			}
 		})
 	}, [])
 
-
 	const onSubmit = (data: { expenseDate: Date, expenseDetails: string, expenseAmount: number, expenseCategoryId: string }) => {
 		data.expenseDate.setDate(data.expenseDate.getDate() + 1)
 		editExpense({...data, expenseId: id}).then(res => {
-			if (res.status === 200) {
-				toast.success("expense edited...")
+			if (res.data.status) {
+				toast.success(res.data.message)
 				navigate(-1)
+			}else{
+				toast.error(res.data.message)
 			}
 		}).catch(err => {
 			console.log(err)
@@ -54,7 +56,6 @@ const EditExpense = () => {
 	}
 
 	return (
-		<>
 			<div className="mx-auto">
 				<Breadcrumb pageName="Edit Expense" />
 				<div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -141,7 +142,6 @@ const EditExpense = () => {
 					</div>
 				</div>
 			</div>
-		</>
 	);
 };
 

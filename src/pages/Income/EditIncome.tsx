@@ -1,11 +1,12 @@
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Breadcrumb from '../../components/Breadcrumb';
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { editIncome, getIncomeCategory, getIncomes } from '../../api/apiHandler';
 import toast from 'react-hot-toast';
-import { useEffect, useState } from 'react';
+
+import { editIncome, getIncomeCategory, getIncomes } from '../../api/apiHandler';
+import Breadcrumb from '../../components/Breadcrumb';
 
 const EditIncome = () => {
 	const navigate = useNavigate();
@@ -25,16 +26,16 @@ const EditIncome = () => {
 
 	useEffect(() => {
 		getIncomeCategory({}).then(res => {
-			if (res.status === 200) {
-				setIncomeCategory(res.data)
+			if (res.data.status) {
+				setIncomeCategory(res.data.data)
 			}
 		})
 		getIncomes({ incomeId: id }).then(res => {
-			if (res.status === 200) {
-				setValue("incomeDate", res.data.incomeDate.split("T")[0])
-				setValue("incomeDetails", res.data.incomeDetails)
-				setValue("incomeAmount", res.data.incomeAmount)
-				setValue("incomeCategoryId", res.data.incomeCategoryId)
+			if (res.data.status) {
+				setValue("incomeDate", res.data.data.incomeDate.split("T")[0])
+				setValue("incomeDetails", res.data.data.incomeDetails)
+				setValue("incomeAmount", res.data.data.incomeAmount)
+				setValue("incomeCategoryId", res.data.data.incomeCategoryId)
 			}
 		})
 	}, [])
@@ -43,9 +44,11 @@ const EditIncome = () => {
 	const onSubmit = (data: { incomeDate: Date, incomeDetails: string, incomeAmount: number, incomeCategoryId: string }) => {
 		data.incomeDate.setDate(data.incomeDate.getDate() + 1)
 		editIncome({...data, incomeId: id}).then(res => {
-			if (res.status === 200) {
-				toast.success("expense edited...")
+			if (res.data.status) {
+				toast.success(res.data.message)
 				navigate(-1)
+			}else{
+				toast.error(res.data.message)
 			}
 		}).catch(err => {
 			console.log(err)
@@ -54,7 +57,6 @@ const EditIncome = () => {
 	}
 
 	return (
-		<>
 			<div className="mx-auto">
 				<Breadcrumb pageName="Edit Income" />
 				<div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -141,7 +143,6 @@ const EditIncome = () => {
 					</div>
 				</div>
 			</div>
-		</>
 	);
 };
 

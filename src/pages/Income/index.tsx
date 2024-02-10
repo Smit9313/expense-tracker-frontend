@@ -1,10 +1,11 @@
-import Breadcrumb from '../../components/Breadcrumb'
 import { Modal, Table, Tag } from 'antd';
 import type { TableProps } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { deleteExpense, deleteIncome, getIncomes } from '../../api/apiHandler';
 import toast from 'react-hot-toast';
+
+import { deleteIncome, getIncomes } from '../../api/apiHandler';
+import Breadcrumb from '../../components/Breadcrumb'
 
 interface DataType {
 	key: number;
@@ -23,8 +24,8 @@ const IncomeList = () => {
 
 	useEffect(() => {
 		getIncomes({}).then(res => {
-			if (res.status === 200) {
-				setIncomes(res.data)
+			if (res.data.status) {
+				setIncomes(res.data.data)
 			}
 		})
 	}, [curId])
@@ -37,9 +38,11 @@ const IncomeList = () => {
 		if (curId) {
 			console.log(curId)
 			deleteIncome({ incomeId: curId }).then(res => {
-				if (res.status == 204) {
+				if (res.data.status) {
 					setCurId("");
-					toast.success("deleted...")
+					toast.success(res.data.message)
+				}else{
+					toast.error(res.data.message)
 				}
 			}).catch(err => {
 				toast.error(err.response.data.error)
