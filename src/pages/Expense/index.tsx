@@ -176,7 +176,7 @@ const ExpenseList = () => {
 					<Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} showHeader={true} title={() => {
 						return <div className="flex justify-between" >
 							<h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
-								Top Channels
+								{/* Top Channels */}
 							</h4>
 							<div className=''>
 								<button

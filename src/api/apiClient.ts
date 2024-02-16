@@ -7,6 +7,12 @@ const axiosClient = axios.create({
   },
 });
 
+export function loginRedirectCall() {
+  let path =
+    window.location.protocol + "//" + window.location.host + "/auth/signin";
+  window.location.href = path;
+}
+
 axiosClient.interceptors.request.use(
   function (config) {
     if (
@@ -27,12 +33,13 @@ axiosClient.interceptors.response.use(
     return response;
   },
   function (error) {
+    const token = localStorage.getItem("token");
+    if (token) {
+      localStorage.removeItem("token");
+      loginRedirectCall();
+    }
     return Promise.reject(error);
   }
 );
-
-// axiosClient.defaults.headers.common["Authorization"] =
-//   localStorage.getItem("token");
-// axiosClient.defaults.headers.common["accept-language"] = "en";
 
 export { axiosClient };
