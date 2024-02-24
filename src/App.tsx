@@ -7,12 +7,14 @@ import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
 import Loader from './common/Loader';
 import routes from './routes';
+import { useLazyGetExpenseCategoryQuery } from './reduxState/apis/expenseCategoryApi';
 
 const DefaultLayout = lazy(() => import('./layout/DefaultLayout'));
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
+  const [getExpenseCategory] = useLazyGetExpenseCategoryQuery();
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
@@ -22,6 +24,11 @@ function App() {
     }else{
       // navigate("/");
     }
+    
+    const fetchData = async() =>{
+      await getExpenseCategory({}, true)
+    }
+    fetchData();
   }, []);
 
   return loading ? (

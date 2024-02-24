@@ -11,7 +11,8 @@ import { getToken } from "../../services/utils";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: apiV1,
-  credentials: "include",
+//   credentials: "include",
+  mode: "cors",
   prepareHeaders: (headers) => {
     headers.set("Accept", "application/vnd.api+json");
     headers.set("Content-Type", "application/vnd.api+json");
@@ -20,39 +21,44 @@ const baseQuery = fetchBaseQuery({
     if (accessToken) {
       headers.set("Authorization", accessToken);
     }
-	return headers
+
+    return headers;
   },
 });
 
-const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
-	args,
-	api,
-	extraOptions
-) => {
-	let result = await baseQuery(args, api, extraOptions);
+const baseQueryWithReauth: BaseQueryFn<
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError
+> = async (args, api, extraOptions) => {
+  let result = await baseQuery(args, api, extraOptions);
+  console.log(result);
 
-	if(result.error){
-		if(result.error.status === 401){
-			result = await baseQuery(args, api, extraOptions);
-			if(result.data){
-
-			}else{
-				// logout user logic 
-			}
-		}else{
-			console.warn(result.error);
-			if(result.error.status !== 401 && result.error.status !== 403 && result.error.status !== 422){
-				// do something with errors
-			}
-		}
-	}
-	return result;
-}
+  if (result.error) {
+    if (result.error.status === 401) {
+      result = await baseQuery(args, api, extraOptions);
+      if (result.data) {
+      } else {
+        // logout user logic
+      }
+    } else {
+      console.warn(result.error);
+      if (
+        result.error.status !== 401 &&
+        result.error.status !== 403 &&
+        result.error.status !== 422
+      ) {
+        // do something with errors
+      }
+    }
+  }
+  return result;
+};
 
 const baseCreateApi = createApi({
-	reducerPath: "api",
-	baseQuery: retry(baseQueryWithReauth, {maxRetries: 0}),
-	endpoints: () => ({}),
-})
+  reducerPath: "api",
+  baseQuery: retry(baseQueryWithReauth, { maxRetries: 0 }),
+  endpoints: () => ({}),
+});
 
 export default baseCreateApi;

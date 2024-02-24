@@ -1,8 +1,5 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import {
-  persistStore,
-  persistReducer
-} from "redux-persist";
+import { persistStore, persistReducer } from "redux-persist";
 // import {
 // 	FLUSH,
 // 	REHYDRATE,
@@ -19,7 +16,7 @@ const persistConfig = {
   key: "root",
   version: 4,
   storage,
-  whitelist: ["user"],
+  whitelist: ["user", "expeneseCategory"],
 };
 
 const reducers = combineReducers({
@@ -34,10 +31,11 @@ export const store = configureStore({
   // enhancers: [],
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: {
-        // ignoreActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-        ignoreActions: false,
-      },
+      //   serializableCheck: {
+      //     ignoreActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      //     ignoreActions: false,
+      //   },
+      serializableCheck: false,
     }).concat(baseCreateApi.middleware),
 });
 
