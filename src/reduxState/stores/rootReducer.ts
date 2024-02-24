@@ -1,7 +1,8 @@
+import  userReducer from '../slices/userSlice';
 
 
 const rootReducer = {
-	user: {},
+	user: userReducer,
 }
 
 export default rootReducer;
