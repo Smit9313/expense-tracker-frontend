@@ -15,7 +15,6 @@ interface DataType {
 	details: string;
 }
 
-
 const ExpenseList = () => {
 	const navigate = useNavigate();
 	const [expenses, setExpenses] = useState([]);
