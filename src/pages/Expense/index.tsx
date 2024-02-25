@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 import Breadcrumb from '../../components/Breadcrumb'
-import { deleteExpense, getExpenses } from '../../api/apiHandler';
+import { deleteExpense } from '../../api/apiHandler';
+import { useLazyGetExpensesQuery } from '../../reduxState/apis/expenseApi';
 
 interface DataType {
 	key: number;
@@ -15,20 +16,24 @@ interface DataType {
 	details: string;
 }
 
+
 const ExpenseList = () => {
 	const navigate = useNavigate();
+	const [getExpenses, { isLoading }] = useLazyGetExpensesQuery();
 	const [expenses, setExpenses] = useState([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [curId, setCurId] = useState("");
 
 	useEffect(() => {
-		getExpenses({}).then(res => {
-			if (res.data.status) {
-				setExpenses(res.data.data)
-			}else{
-				setExpenses([])
-			}
-		})
+		const fetchData = async () => {
+			await getExpenses({}, true).then(data => {
+				const res = data.data;
+				if (res.status) {
+					setExpenses(res.data)
+				}
+			})
+		}
+		fetchData();
 	}, [curId])
 
 	const showModal = () => {
@@ -172,7 +177,7 @@ const ExpenseList = () => {
 			<Breadcrumb pageName="Expense" />
 			<div className="flex flex-col gap-10">
 				<div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-					<Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} showHeader={true} title={() => {
+					<Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} loading={isLoading} showHeader={true} title={() => {
 						return <div className="flex justify-between" >
 							<h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
 								{/* Top Channels */}

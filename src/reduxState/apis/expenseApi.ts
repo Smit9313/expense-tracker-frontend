@@ -8,10 +8,13 @@ export const expenseApi = baseCreateApi.injectEndpoints({
         method: "POST",
       }),
       onQueryStarted(_args, { dispatch, queryFulfilled }) {
-        console.log(dispatch, queryFulfilled);
         // expeneseCategoryhandler({ dispatch, queryFulfilled });
       },
       keepUnusedDataFor: 0,
     }),
   }),
 });
+
+export const {
+	useLazyGetExpensesQuery
+} = expenseApi
