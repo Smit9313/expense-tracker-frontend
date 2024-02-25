@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { Modal } from 'antd';
 import toast from 'react-hot-toast';
 
-import { deleteExpenseCategory, getExpenseCategory } from '../../api/apiHandler';
 import Breadcrumb from '../../components/Breadcrumb'
+import { useDeleteExpenseCategoryMutation, useLazyGetExpenseCategoryQuery } from '../../reduxState/apis/expenseCategoryApi';
 
 interface DataType {
 	key: string;
@@ -15,30 +15,38 @@ interface DataType {
 
 const Ecategory = () => {
 	const navigate = useNavigate();
+	const [getExpenseCategory, { isLoading }] = useLazyGetExpenseCategoryQuery();
+	const [deleteExpenseCategory] = useDeleteExpenseCategoryMutation();
 	const [expenseCategory, setExpenseCategory] = useState([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [curId, setCurId] = useState("");
 
+	console.log(useLazyGetExpenseCategoryQuery())
 	useEffect(() => {
-		getExpenseCategory({}).then(res => {
-			if (res.data.status) {
-				setExpenseCategory(res.data.data)
-			}
-		})
+		const fetchData = async () => {
+			await getExpenseCategory({}, true).then(data => {
+				const res = data.data;
+				if (res.status) {
+					setExpenseCategory(res.data)
+				}
+			})
+		}
+		fetchData();
 	}, [curId])
 
 	const showModal = () => {
 		setIsModalOpen(true);
 	};
 
-	const handleOk = () => {
+	const handleOk = async () => {
 		if (curId) {
-			deleteExpenseCategory({ expenseCategoryId: curId }).then(res => {
-				if (res.data.status) {
+			await deleteExpenseCategory({ expenseCategoryId: curId }).then(data => {
+				const res = data.data;
+				if (res.status) {
 					setCurId("");
 					toast.success("deleted...")
-				}else{
-					toast.error(res.data.message)
+				} else {
+					toast.error(res.message)
 				}
 			}).catch(err => {
 				toast.error(err.response.data.error)
@@ -142,7 +150,7 @@ const Ecategory = () => {
 			<Breadcrumb pageName="Expense Category" />
 			<div className="flex flex-col gap-10">
 				<div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-					<Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} showHeader={true} title={() => {
+					<Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} loading={isLoading} showHeader={true} title={() => {
 						return <div className="flex justify-between" >
 							<h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
 								{/* Top Channels */}

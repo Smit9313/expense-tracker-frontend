@@ -3,7 +3,6 @@ import baseCreateApi from "./baseCreateApi";
 const expeneseCategoryhandler = async ({ dispatch, queryFulfilled }: any) => {
   try {
     const data = await queryFulfilled;
-    console.log(data);
   } catch (error) {
     console.log(error);
   }
@@ -14,13 +13,24 @@ export const expenseCategoryApi = baseCreateApi.injectEndpoints({
     getExpenseCategory: builder.query({
       query: () => ({
         url: "expenseCategory/getExpenseCategory",
-        method: "POST",
+        method: "GET",
       }),
-      onQueryStarted(args, { dispatch, queryFulfilled }) {
+      onQueryStarted(_args, { dispatch, queryFulfilled }) {
         expeneseCategoryhandler({ dispatch, queryFulfilled });
       },
+      keepUnusedDataFor: 0,
+    }),
+    deleteExpenseCategory: builder.mutation({
+      query: (queryArgs) => ({
+        url: `expenseCategory/deleteExpenseCategory/${queryArgs.expenseCategoryId}`,
+        method: "DELETE",
+        body: queryArgs,
+      }),
     }),
   }),
 });
 
-export const { useLazyGetExpenseCategoryQuery } = expenseCategoryApi;
+export const {
+  useLazyGetExpenseCategoryQuery,
+  useDeleteExpenseCategoryMutation,
+} = expenseCategoryApi;

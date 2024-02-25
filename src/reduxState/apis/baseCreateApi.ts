@@ -32,12 +32,12 @@ const baseQueryWithReauth: BaseQueryFn<
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
-  console.log(result);
 
   if (result.error) {
     if (result.error.status === 401) {
       result = await baseQuery(args, api, extraOptions);
       if (result.data) {
+        
       } else {
         // logout user logic
       }
