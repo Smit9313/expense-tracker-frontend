@@ -39,7 +39,7 @@ const Ecategory = () => {
 
 	const handleOk = async () => {
 		if (curId) {
-			await deleteExpenseCategory({ expenseCategoryId: curId }).then(data => {
+			await deleteExpenseCategory({ expenseCategoryId: curId }).then((data: any) => {
 				const res = data.data;
 				if (res.status) {
 					setCurId("");
