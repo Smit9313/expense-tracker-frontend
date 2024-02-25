@@ -7,9 +7,9 @@ export const expenseApi = baseCreateApi.injectEndpoints({
         url: "expense/getExpenses",
         method: "GET",
       }),
-      onQueryStarted(_args, { dispatch, queryFulfilled }) {
-        // expeneseCategoryhandler({ dispatch, queryFulfilled });
-      },
+      // onQueryStarted(_args, { dispatch, queryFulfilled }) {
+      //   expeneseCategoryhandler({ dispatch, queryFulfilled });
+      // },
       keepUnusedDataFor: 0,
     }),
   }),
