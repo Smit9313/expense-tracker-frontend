@@ -20,8 +20,7 @@ const Ecategory = () => {
 	const [expenseCategory, setExpenseCategory] = useState([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [curId, setCurId] = useState("");
-
-	console.log(useLazyGetExpenseCategoryQuery())
+	
 	useEffect(() => {
 		const fetchData = async () => {
 			await getExpenseCategory({}, true).then(data => {
