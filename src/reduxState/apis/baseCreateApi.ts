@@ -11,8 +11,8 @@ import { getToken } from "../../services/utils";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: apiV1,
-//   credentials: "include",
   mode: "cors",
+  // credentials: "include",
   prepareHeaders: (headers) => {
     headers.set("Accept", "application/vnd.api+json");
     headers.set("Content-Type", "application/vnd.api+json");

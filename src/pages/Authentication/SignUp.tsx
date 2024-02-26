@@ -4,10 +4,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import toast from 'react-hot-toast';
 
-import { registerUser } from '../../api/apiHandler';
+// import { registerUser } from '../../api/apiHandler';
+import { useRegisterMutation } from '../../reduxState/apis/authApi';
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const [registerUser] = useRegisterMutation();
   const validationSchema = Yup.object().shape({
     username: Yup.string().required("Name is required"),
     email: Yup.string().email("Email is invalid").required("Email is required"),
@@ -19,15 +21,16 @@ const SignUp = () => {
   const { register, handleSubmit, formState } = useForm(formOptions);
   const { errors } = formState;
 
-  const onSubmit = (data: { username: string, email: string, password: string }) => {
+  const onSubmit = async (data: { username: string, email: string, password: string }) => {
     console.log(data)
-    registerUser(data).then(res => {
-      if (res.data.status) {
-        toast.success(res.data.message)
-        navigate("/auth/signin")
-      } else {
-        toast.error(res.data.message)
-      }
+    await registerUser(data).then(res => {
+      console.log(res)
+      // if (res.data.status) {
+      //   toast.success(res.data.message)
+      //   navigate("/auth/signin")
+      // } else {
+      //   toast.error(res.data.message)
+      // }
     }).catch(err => {
       toast.error(err.response.data.message)
     })

@@ -13,14 +13,22 @@ export const authApi = baseCreateApi.injectEndpoints({
       query: (queryArgs) => ({
         url: "user/login",
         method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        crossDomain: true,
         body: queryArgs,
+      }),
+    }),
+    register: builder.mutation({
+      query: (queryArgs) => ({
+        url: "user/register",
+        method: "POST",
+        headers: getheaders(),
+        body: JSON.stringify({
+          data: {
+            ...queryArgs
+          }
+        }),
       }),
     }),
   }),
 });
 
-export const { useLoginMutation } = authApi;
+export const { useLoginMutation, useRegisterMutation } = authApi;

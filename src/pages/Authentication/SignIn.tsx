@@ -33,6 +33,14 @@ const SignIn = () => {
     }).catch(err => {
       toast.error(err.response.data.message)
     })
+    // login(data).then(res => {
+    //   if (res.data.status) {
+    //     localStorage.setItem("token", res.data.data.token);
+    //     navigate("/")
+    //   }
+    // }).catch(err => {
+    //   toast.error(err.response.data.message)
+    // })
   }
 
   return (
