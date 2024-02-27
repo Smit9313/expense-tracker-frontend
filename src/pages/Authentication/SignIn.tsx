@@ -29,8 +29,8 @@ const SignIn = () => {
       }else{
         toast.error(res.message)
       }
-    }).catch(err => {
-      toast.error(err.response.data.message)
+    }).catch((err: any) => {
+      toast.error(err.data.message)
     })
   }
 

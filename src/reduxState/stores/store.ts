@@ -1,22 +1,23 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 // import {
-// 	FLUSH,
-// 	REHYDRATE,
-// 	PAUSE,
-// 	PERSIST,
-// 	PURGE,
-// 	REGISTER,
-// } from "redux-persist"
+//   FLUSH,
+//   REHYDRATE,
+//   PAUSE,
+//   PERSIST,
+//   PURGE,
+//   REGISTER,
+// } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import baseCreateApi from "../apis/baseCreateApi";
 import rootReducer from "./rootReducer";
+// import { authApiV1 } from '../apis/authApiV1';
 
 const persistConfig = {
   key: "root",
   version: 4,
   storage,
-  whitelist: ["user", "expeneseCategory"],
+  whitelist: ["user", "expeneseCategory", "expense"],
 };
 
 const reducers = combineReducers({
@@ -31,10 +32,10 @@ export const store = configureStore({
   // enhancers: [],
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      //   serializableCheck: {
-      //     ignoreActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      //     ignoreActions: false,
-      //   },
+      // serializableCheck: {
+      //   ignoreActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      //   // ignoreActions: false,
+      // },
       serializableCheck: false,
     }).concat(baseCreateApi.middleware),
 });

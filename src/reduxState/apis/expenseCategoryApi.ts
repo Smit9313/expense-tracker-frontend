@@ -20,6 +20,13 @@ export const expenseCategoryApi = baseCreateApi.injectEndpoints({
       },
       keepUnusedDataFor: 0,
     }),
+    createExpenseCategory: builder.mutation({
+      query: (queryArgs) => ({
+        url: "expenseCategory/createExpenseCategory",
+        method: "POST",
+        body: queryArgs
+      }),
+    }),
     deleteExpenseCategory: builder.mutation({
       query: (queryArgs) => ({
         url: `expenseCategory/deleteExpenseCategory/${queryArgs.expenseCategoryId}`,
@@ -32,5 +39,6 @@ export const expenseCategoryApi = baseCreateApi.injectEndpoints({
 
 export const {
   useLazyGetExpenseCategoryQuery,
+  useCreateExpenseCategoryMutation,
   useDeleteExpenseCategoryMutation,
 } = expenseCategoryApi;
