@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import toast from 'react-hot-toast';
 
 // import { login } from '../../api/apiHandler';
-import { useLoginMutation } from '../../reduxState/apis/authApi';
+import { useLoginMutation } from '../../reduxState/apis/authApiV1';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -23,24 +23,15 @@ const SignIn = () => {
 
   const onSubmit = async (data: { email: string, password: string }) => {
     await login(data).unwrap().then((res: any) => {
-      console.log(res)
       if (res.status) {
-        // localStorage.setItem("token", res.data.token);
-        // navigate("/")
+        localStorage.setItem("token", res.data.token);
+        navigate("/")
       }else{
         toast.error(res.message)
       }
     }).catch(err => {
       toast.error(err.response.data.message)
     })
-    // login(data).then(res => {
-    //   if (res.data.status) {
-    //     localStorage.setItem("token", res.data.data.token);
-    //     navigate("/")
-    //   }
-    // }).catch(err => {
-    //   toast.error(err.response.data.message)
-    // })
   }
 
   return (
