@@ -56,6 +56,7 @@ const baseQueryWithReauth: BaseQueryFn<
 
 const baseCreateApi = createApi({
   reducerPath: "api",
+  tagTypes: ['expenseCategory'],
   baseQuery: retry(baseQueryWithReauth, { maxRetries: 0 }),
   endpoints: () => ({}),
 });

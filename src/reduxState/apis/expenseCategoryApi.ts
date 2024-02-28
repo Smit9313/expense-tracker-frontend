@@ -15,6 +15,7 @@ export const expenseCategoryApi = baseCreateApi.injectEndpoints({
         url: "expenseCategory/getExpenseCategory",
         method: "GET",
       }),
+      providesTags: ['expenseCategory'],
       onQueryStarted(_args, { dispatch, queryFulfilled }) {
         expeneseCategoryhandler({ dispatch, queryFulfilled });
       },
@@ -33,12 +34,13 @@ export const expenseCategoryApi = baseCreateApi.injectEndpoints({
         method: "DELETE",
         body: queryArgs,
       }),
+      invalidatesTags: ['expenseCategory']
     }),
   }),
 });
 
 export const {
-  useLazyGetExpenseCategoryQuery,
+  useGetExpenseCategoryQuery,
   useCreateExpenseCategoryMutation,
   useDeleteExpenseCategoryMutation,
 } = expenseCategoryApi;

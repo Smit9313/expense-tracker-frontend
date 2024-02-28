@@ -1,12 +1,12 @@
 import { Table } from 'antd';
 import type { TableProps } from 'antd';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Modal } from 'antd';
 import toast from 'react-hot-toast';
 
 import Breadcrumb from '../../components/Breadcrumb'
-import { useDeleteExpenseCategoryMutation, useLazyGetExpenseCategoryQuery } from '../../reduxState/apis/expenseCategoryApi';
+import { useDeleteExpenseCategoryMutation, useGetExpenseCategoryQuery } from '../../reduxState/apis/expenseCategoryApi';
 
 interface DataType {
 	key: string;
@@ -15,23 +15,10 @@ interface DataType {
 
 const Ecategory = () => {
 	const navigate = useNavigate();
-	const [getExpenseCategory, { isLoading }] = useLazyGetExpenseCategoryQuery();
+	const { data: expenseCategoryData, isLoading, isSuccess, isError, error } = useGetExpenseCategoryQuery({});
 	const [deleteExpenseCategory] = useDeleteExpenseCategoryMutation();
-	const [expenseCategory, setExpenseCategory] = useState([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [curId, setCurId] = useState("");
-	
-	useEffect(() => {
-		const fetchData = async () => {
-			await getExpenseCategory({}, true).then(data => {
-				const res = data.data;
-				if (res.status) {
-					setExpenseCategory(res.data)
-				}
-			})
-		}
-		fetchData();
-	}, [curId])
 
 	const showModal = () => {
 		setIsModalOpen(true);
@@ -47,11 +34,12 @@ const Ecategory = () => {
 				} else {
 					toast.error(res.message)
 				}
-			}).catch(err => {
+			}).catch((err: any) => {
 				toast.error(err.response.data.error)
+			}).finally(() => {
+				setIsModalOpen(false);
 			})
 		}
-		setIsModalOpen(false);
 	};
 
 	const handleCancel = () => {
@@ -122,10 +110,10 @@ const Ecategory = () => {
 		},
 	];
 
-	const data: DataType[] = expenseCategory && expenseCategory.map((val: any, index) => {
+	const data: DataType[] = isSuccess ? expenseCategoryData.data.map((val: any, index: any) => {
 		const updatedData = { ...val, key: index }
 		return updatedData
-	})
+	}) : []
 
 	return (
 		<>
