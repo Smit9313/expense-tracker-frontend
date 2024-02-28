@@ -26,8 +26,7 @@ const Ecategory = () => {
 
 	const handleOk = async () => {
 		if (curId) {
-			await deleteExpenseCategory({ expenseCategoryId: curId }).then((data: any) => {
-				const res = data.data;
+			await deleteExpenseCategory({ expenseCategoryId: curId }).unwrap().then((res: any) => {
 				if (res.status) {
 					setCurId("");
 					toast.success("deleted...")
@@ -52,6 +51,12 @@ const Ecategory = () => {
 			title: 'Name',
 			dataIndex: 'name',
 			key: 'name',
+			render: (text) => <a>{text}</a>
+		},
+		{
+			title: 'Total Expense',
+			dataIndex: 'totalExpense',
+			key: 'totalExpense',
 			render: (text) => <a>{text}</a>
 		},
 		{

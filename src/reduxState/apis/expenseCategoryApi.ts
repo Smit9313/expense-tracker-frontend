@@ -15,18 +15,33 @@ export const expenseCategoryApi = baseCreateApi.injectEndpoints({
         url: "expenseCategory/getExpenseCategory",
         method: "GET",
       }),
-      providesTags: ['expenseCategory'],
+      providesTags: ["expenseCategory"],
       onQueryStarted(_args, { dispatch, queryFulfilled }) {
         expeneseCategoryhandler({ dispatch, queryFulfilled });
       },
       keepUnusedDataFor: 0,
     }),
+    getExpenseCategoryById: builder.query({
+      query: (queryArgs) => ({
+        url: `expenseCategory/getExpenseCategory/${queryArgs.expenseCategoryId}`,
+        method: "GET",
+      }),
+      providesTags: ["expenseCategory"],
+    }),
     createExpenseCategory: builder.mutation({
       query: (queryArgs) => ({
         url: "expenseCategory/createExpenseCategory",
         method: "POST",
-        body: queryArgs
+        body: queryArgs,
       }),
+    }),
+    editExpenseCategory: builder.mutation({
+      query: (queryArgs) => ({
+        url: `expenseCategory/editExpenseCategory/${queryArgs.expenseCategoryId}`,
+        method: "PATCH",
+        body: queryArgs,
+      }),
+      invalidatesTags: ["expenseCategory"],
     }),
     deleteExpenseCategory: builder.mutation({
       query: (queryArgs) => ({
@@ -34,13 +49,15 @@ export const expenseCategoryApi = baseCreateApi.injectEndpoints({
         method: "DELETE",
         body: queryArgs,
       }),
-      invalidatesTags: ['expenseCategory']
+      invalidatesTags: ["expenseCategory"],
     }),
   }),
 });
 
 export const {
   useGetExpenseCategoryQuery,
+  useGetExpenseCategoryByIdQuery,
   useCreateExpenseCategoryMutation,
+  useEditExpenseCategoryMutation,
   useDeleteExpenseCategoryMutation,
 } = expenseCategoryApi;

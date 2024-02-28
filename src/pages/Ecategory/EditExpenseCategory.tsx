@@ -5,12 +5,16 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import toast from 'react-hot-toast';
 
-import { editExpenseCategory, getExpenseCategory } from '../../api/apiHandler';
+// import { editExpenseCategory, getExpenseCategory } from '../../api/apiHandler';
 import Breadcrumb from '../../components/Breadcrumb';
+import { useEditExpenseCategoryMutation, useGetExpenseCategoryByIdQuery } from '../../reduxState/apis/expenseCategoryApi';
 
 const EditExpenseCategory = () => {
 	const navigate = useNavigate();
 	const { id } = useParams();
+	const { data: expenseCategory, isLoading, isSuccess, isError } = useGetExpenseCategoryByIdQuery({ expenseCategoryId: id });
+	const [editExpenseCategory] = useEditExpenseCategoryMutation();
+	console.log(expenseCategory)
 
 	const validationSchema = Yup.object().shape({
 		name: Yup.string().required("Category Name is required")
@@ -21,20 +25,18 @@ const EditExpenseCategory = () => {
 	const { errors } = formState;
 
 	useEffect(() => {
-		getExpenseCategory({ expenseCategoryId: id }).then(res => {
-			if (res.data.status) {
-				setValue("name", res.data.data.name)
-			}
-		})
-	}, [])
+		if (isSuccess) {
+			setValue("name", expenseCategory.data.name)
+		}
+	}, [isSuccess])
 
-	const onSubmit = (data: { name: string }) => {
-		editExpenseCategory({ expenseCategoryId: id, ...data }).then(res => {
-			if (res.data.status) {
-				toast.success(res.data.message)
+	const onSubmit = async (data: { name: string }) => {
+		await editExpenseCategory({ expenseCategoryId: id, ...data }).unwrap().then(res => {
+			if (res.status) {
+				toast.success(res.message)
 				navigate(-1)
 			} else {
-				toast.error(res.data.message)
+				toast.error(res.message)
 			}
 		}).catch(err => {
 			toast.error(err.response.data.message)
