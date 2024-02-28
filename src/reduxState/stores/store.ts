@@ -1,17 +1,19 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
-// import {
-//   FLUSH,
-//   REHYDRATE,
-//   PAUSE,
-//   PERSIST,
-//   PURGE,
-//   REGISTER,
-// } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import baseCreateApi from "../apis/baseCreateApi";
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from "redux-persist";
+import { useDispatch } from "react-redux";
+
 import rootReducer from "./rootReducer";
-// import { authApiV1 } from '../apis/authApiV1';
+// import { actionListenerEnhancer } from "../enhancers/actionListener";
+import baseCreateApi from "../apis/baseCreateApi";
 
 const persistConfig = {
   key: "root",
@@ -25,20 +27,20 @@ const reducers = combineReducers({
   ...rootReducer,
 });
 
-const persistedreducer = persistReducer(persistConfig, reducers);
+const persistedReducer = persistReducer(persistConfig, reducers);
 
 export const store = configureStore({
-  reducer: persistedreducer,
-  // enhancers: [],
+  reducer: persistedReducer,
+  // enhancers: [actionListenerEnhancer],
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      // serializableCheck: {
-      //   ignoreActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      //   // ignoreActions: false,
-      // },
-      serializableCheck: false,
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
     }).concat(baseCreateApi.middleware),
 });
 
 export const persistor = persistStore(store);
 export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch = useDispatch;

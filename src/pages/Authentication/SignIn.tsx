@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import toast from 'react-hot-toast';
 
 // import { login } from '../../api/apiHandler';
-import { useLoginMutation } from '../../reduxState/apis/authApiV1';
+import { useLoginMutation } from '../../reduxState/apis/authApi';
 
 const SignIn = () => {
   const navigate = useNavigate();

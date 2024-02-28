@@ -12,10 +12,10 @@ import { getToken } from "../../services/utils";
 const baseQuery = fetchBaseQuery({
   baseUrl: apiV1,
   mode: "cors",
-  // credentials: "include",
-  prepareHeaders: (headers) => {
+  credentials: "include",
+  prepareHeaders: (headers, { getState }) => {
     headers.set("Accept", "application/vnd.api+json");
-    headers.set("Content-Type", "application/vnd.api+json");
+    // headers.set("Content-Type", "application/vnd.api+json");
 
     const accessToken = getToken();
     if (accessToken) {
@@ -37,7 +37,6 @@ const baseQueryWithReauth: BaseQueryFn<
     if (result.error.status === 401) {
       result = await baseQuery(args, api, extraOptions);
       if (result.data) {
-        
       } else {
         // logout user logic
       }
