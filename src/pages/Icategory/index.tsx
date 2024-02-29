@@ -3,7 +3,6 @@ import { Table } from 'antd';
 import type { TableProps } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { deleteIncomeCategory } from '../../api/apiHandler';
 import { Modal } from 'antd';
 import toast from 'react-hot-toast';
 import { useDeleteIncomeCategoryMutation, useGetIncomeCategoryQuery } from '../../reduxState/apis/incomeCategoryApi';

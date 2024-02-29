@@ -3,11 +3,13 @@ import Breadcrumb from '../../components/Breadcrumb';
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { createIncomeCategory } from '../../api/apiHandler';
+// import { createIncomeCategory } from '../../api/apiHandler';
 import toast from 'react-hot-toast';
+import { useCreateIncomeCategoryMutation } from '../../reduxState/apis/incomeCategoryApi';
 
 const AddIncomeCategory = () => {
   const navigate = useNavigate();
+  const [createIncomeCategory] = useCreateIncomeCategoryMutation();
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Category Name is required")
@@ -17,13 +19,13 @@ const AddIncomeCategory = () => {
   const { register, handleSubmit, formState } = useForm(formOptions);
   const { errors } = formState;
 
-  const onSubmit = (data: { name: string }) => {
-    createIncomeCategory(data).then(res => {
-      if (res.data.status) {
-        toast.success(res.data.message)
+  const onSubmit = async (data: { name: string }) => {
+    await createIncomeCategory(data).unwrap().then(res => {
+      if (res.status) {
+        toast.success(res.message)
         navigate(-1)
       } else {
-        toast.error(res.data.message)
+        toast.error(res.message)
       }
     }).catch(err => {
       console.log(err)
