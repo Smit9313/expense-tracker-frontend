@@ -1,11 +1,11 @@
+import { useState } from 'react';
 import { Modal, Table, Tag } from 'antd';
 import type { TableProps } from 'antd';
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-import { deleteIncome, getIncomes } from '../../api/apiHandler';
 import Breadcrumb from '../../components/Breadcrumb'
+import { useDeleteIncomeMutation, useGetIncomesQuery } from '../../reduxState/apis/incomeApi';
 
 interface DataType {
 	key: number;
@@ -18,31 +18,24 @@ interface DataType {
 
 const IncomeList = () => {
 	const navigate = useNavigate();
-	const [incomes, setIncomes] = useState([]);
+	const { data: incomeData, isLoading, isSuccess } = useGetIncomesQuery({});
+	const [deleteIncome] = useDeleteIncomeMutation();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [curId, setCurId] = useState("");
-
-	useEffect(() => {
-		getIncomes({}).then(res => {
-			if (res.data.status) {
-				setIncomes(res.data.data)
-			}
-		})
-	}, [curId])
 
 	const showModal = () => {
 		setIsModalOpen(true);
 	};
 
-	const handleOk = () => {
+	const handleOk = async () => {
 		if (curId) {
 			console.log(curId)
-			deleteIncome({ incomeId: curId }).then(res => {
-				if (res.data.status) {
+			await deleteIncome({ incomeId: curId }).unwrap().then(res => {
+				if (res.status) {
 					setCurId("");
-					toast.success(res.data.message)
-				}else{
-					toast.error(res.data.message)
+					toast.success(res.message)
+				} else {
+					toast.error(res.message)
 				}
 			}).catch(err => {
 				toast.error(err.response.data.error)
@@ -144,10 +137,10 @@ const IncomeList = () => {
 		}
 	];
 
-	const data: DataType[] = incomes && incomes.map((val: any, index) => {
+	const data: DataType[] = isSuccess ? incomeData.data.map((val: any, index: any) => {
 		const updatedData = { date: val.incomeDate, category: val.incomeCategoryId.name, amount: val.incomeAmount, details: val.incomeDetails, _id: val._id, key: index }
 		return updatedData
-	})
+	}) : []
 
 	return (
 		<>
@@ -171,7 +164,7 @@ const IncomeList = () => {
 			<Breadcrumb pageName="Income" />
 			<div className="flex flex-col gap-10">
 				<div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-					<Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} showHeader={true} title={() => {
+					<Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} loading={isLoading} showHeader={true} title={() => {
 						return <div className="flex justify-between" >
 							<h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
 								{/* Top Channels */}

@@ -18,7 +18,7 @@ interface DataType {
 
 const ExpenseList = () => {
 	const navigate = useNavigate();
-	const { data: expenseData, isLoading, isSuccess, isError, error } = useGetExpensesQuery({});
+	const { data: expenseData, isLoading, isSuccess } = useGetExpensesQuery({});
 	const [deleteExpense] = useDeleteExpenseMutation();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [curId, setCurId] = useState("");

@@ -10,7 +10,7 @@ import { useCreateExpenseMutation } from '../../reduxState/apis/expenseApi';
 
 const AddExpense = () => {
 	const navigate = useNavigate();
-	const { data: expenseCategoryData, isLoading, isSuccess, isError, error } = useGetExpenseCategoryQuery({});
+	const { data: expenseCategoryData, isSuccess } = useGetExpenseCategoryQuery({});
 	const [createExpense] = useCreateExpenseMutation();
 
 	const validationSchema = Yup.object().shape({

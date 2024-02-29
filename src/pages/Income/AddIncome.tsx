@@ -3,21 +3,15 @@ import Breadcrumb from '../../components/Breadcrumb';
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { createIncome, getIncomeCategory } from '../../api/apiHandler';
 import toast from 'react-hot-toast';
-import { useEffect, useState } from 'react';
+
+import { useGetIncomeCategoryQuery } from '../../reduxState/apis/incomeCategoryApi';
+import { useCreateIncomeMutation } from '../../reduxState/apis/incomeApi';
 
 const AddExpense = () => {
 	const navigate = useNavigate();
-	const [incomeCategory, setIncomeCategory] = useState([]);
-
-	useEffect(() => {
-		getIncomeCategory({}).then(res => {
-			if (res.data.status) {
-				setIncomeCategory(res.data.data)
-			}
-		})
-	}, [])
+	const { data: incomeCategoryData, isSuccess } = useGetIncomeCategoryQuery({});
+	const [createIncome] = useCreateIncomeMutation();
 
 	const validationSchema = Yup.object().shape({
 		incomeDate: Yup.date().required("Date is required"),
@@ -30,14 +24,14 @@ const AddExpense = () => {
 	const { register, handleSubmit, formState } = useForm(formOptions);
 	const { errors } = formState;
 
-	const onSubmit = (data: { incomeDate: Date, incomeDetails: string, incomeAmount: number, incomeCategoryId: string }) => {
+	const onSubmit = async (data: { incomeDate: Date, incomeDetails: string, incomeAmount: number, incomeCategoryId: string }) => {
 		data.incomeDate.setDate(data.incomeDate.getDate() + 1)
-		createIncome(data).then(res => {
-			if (res.data.status) {
-				toast.success(res.data.message)
+		await createIncome(data).unwrap().then(res => {
+			if (res.status) {
+				toast.success(res.message)
 				navigate(-1)
 			} else {
-				toast.error(res.data.message)
+				toast.error(res.message)
 			}
 		}).catch(err => {
 			console.log(err)
@@ -79,7 +73,7 @@ const AddExpense = () => {
 								id='expenseCategoryId'
 								{...register("incomeCategoryId")}
 							>
-								{incomeCategory && incomeCategory.map((val: any) => <option key={val._id} value={val._id}>{val.name}</option>)}
+								{isSuccess && incomeCategoryData.data.map((val: any) => <option key={val._id} value={val._id}>{val.name}</option>)}
 							</select>
 							{errors.incomeCategoryId && <p className='text-orange-700'>{errors.incomeCategoryId?.message}</p>}
 						</div>
