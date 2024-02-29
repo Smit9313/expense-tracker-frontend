@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Modal, Table, Tag } from 'antd';
 import type { TableProps } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 import Breadcrumb from '../../components/Breadcrumb'
-import { deleteExpense } from '../../api/apiHandler';
-import { useLazyGetExpensesQuery } from '../../reduxState/apis/expenseApi';
+import { useDeleteExpenseMutation, useGetExpensesQuery } from '../../reduxState/apis/expenseApi';
 
 interface DataType {
 	key: number;
@@ -19,35 +18,23 @@ interface DataType {
 
 const ExpenseList = () => {
 	const navigate = useNavigate();
-	const [getExpenses, { isLoading }] = useLazyGetExpensesQuery();
-	const [expenses, setExpenses] = useState([]);
+	const { data: expenseData, isLoading, isSuccess, isError, error } = useGetExpensesQuery({});
+	const [deleteExpense] = useDeleteExpenseMutation();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [curId, setCurId] = useState("");
-
-	useEffect(() => {
-		const fetchData = async () => {
-			await getExpenses({}, true).then(data => {
-				const res = data.data;
-				if (res.status) {
-					setExpenses(res.data)
-				}
-			})
-		}
-		fetchData();
-	}, [curId])
 
 	const showModal = () => {
 		setIsModalOpen(true);
 	};
 
-	const handleOk = () => {
+	const handleOk = async () => {
 		if (curId) {
-			deleteExpense({ expenseId: curId }).then(res => {
-				if (res.data.status) {
+			await deleteExpense({ expenseId: curId }).unwrap().then(res => {
+				if (res.status) {
 					setCurId("");
 					toast.success("deleted...")
-				}else{
-					toast.error(res.data.message)
+				} else {
+					toast.error(res.message)
 				}
 			}).catch(err => {
 				toast.error(err.response.data.error)
@@ -150,7 +137,7 @@ const ExpenseList = () => {
 		}
 	];
 
-	const data: DataType[] = expenses.length > 0 ? expenses.map((val: any, index) => {
+	const data: DataType[] = isSuccess ? expenseData.data.map((val: any, index: any) => {
 		const updatedData = { date: val.expenseDate, category: val.expenseCategoryId.name, amount: val.expenseAmount, details: val.expenseDetails, _id: val._id, key: index }
 		return updatedData
 	}) : []

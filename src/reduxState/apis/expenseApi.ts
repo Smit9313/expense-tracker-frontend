@@ -7,14 +7,45 @@ export const expenseApi = baseCreateApi.injectEndpoints({
         url: "expense/getExpenses",
         method: "GET",
       }),
-      // onQueryStarted(_args, { dispatch, queryFulfilled }) {
-      //   expeneseCategoryhandler({ dispatch, queryFulfilled });
-      // },
       keepUnusedDataFor: 0,
+      providesTags: ["expense"],
+    }),
+    getExpensebyId: builder.query({
+      query: (queryArgs) => ({
+        url: `expense/getExpenses/${queryArgs.expenseId}`,
+        method: "GET",
+      }),
+      providesTags: ["expense"],
+    }),
+    createExpense: builder.mutation({
+      query: (queryArgs) => ({
+        url: "expense/createExpense",
+        method: "POST",
+        body: queryArgs,
+      }),
+    }),
+    editExpense: builder.mutation({
+      query: (queryArgs) => ({
+        url: `expense/editExpense/${queryArgs.expenseId}`,
+        method: "PATCH",
+        body: queryArgs,
+      }),
+    }),
+    deleteExpense: builder.mutation({
+      query: (queryArgs) => ({
+        url: `expense/deleteExpense/${queryArgs.expenseId}`,
+        method: "DELETE",
+        body: queryArgs,
+      }),
+      invalidatesTags: ["expense"],
     }),
   }),
 });
 
 export const {
-	useLazyGetExpensesQuery
-} = expenseApi
+  useGetExpensesQuery,
+  useGetExpensebyIdQuery,
+  useEditExpenseMutation,
+  useCreateExpenseMutation,
+  useDeleteExpenseMutation,
+} = expenseApi;

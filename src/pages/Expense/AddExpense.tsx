@@ -1,24 +1,17 @@
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import toast from 'react-hot-toast';
 
-import { createExpense, getExpenseCategory } from '../../api/apiHandler';
 import Breadcrumb from '../../components/Breadcrumb';
+import { useGetExpenseCategoryQuery } from '../../reduxState/apis/expenseCategoryApi';
+import { useCreateExpenseMutation } from '../../reduxState/apis/expenseApi';
 
 const AddExpense = () => {
 	const navigate = useNavigate();
-	const [expenseCategory, setExpenseCategory] = useState([]);
-
-	useEffect(() => {
-		getExpenseCategory({}).then(res => {
-			if (res.data.status) {
-				setExpenseCategory(res.data.data)
-			}
-		})
-	}, [])
+	const { data: expenseCategoryData, isLoading, isSuccess, isError, error } = useGetExpenseCategoryQuery({});
+	const [createExpense] = useCreateExpenseMutation();
 
 	const validationSchema = Yup.object().shape({
 		expenseDate: Yup.date().required("Date is required"),
@@ -31,14 +24,14 @@ const AddExpense = () => {
 	const { register, handleSubmit, formState } = useForm(formOptions);
 	const { errors } = formState;
 
-	const onSubmit = (data: { expenseDate: Date, expenseDetails: string, expenseAmount: number, expenseCategoryId: string }) => {
+	const onSubmit = async (data: { expenseDate: Date, expenseDetails: string, expenseAmount: number, expenseCategoryId: string }) => {
 		data.expenseDate.setDate(data.expenseDate.getDate() + 1)
-		createExpense(data).then(res => {
-			if (res.data.status) {
-				toast.success(res.data.message)
+		await createExpense(data).unwrap().then(res => {
+			if (res.status) {
+				toast.success(res.message)
 				navigate(-1)
 			} else {
-				toast.error(res.data.message)
+				toast.error(res.message)
 			}
 		}).catch(err => {
 			console.log(err)
@@ -80,7 +73,7 @@ const AddExpense = () => {
 								id='expenseCategoryId'
 								{...register("expenseCategoryId")}
 							>
-								{expenseCategory && expenseCategory.map((val: any) => <option key={val._id} value={val._id}>{val.name}</option>)}
+								{isSuccess && expenseCategoryData.data.map((val: any) => <option key={val._id} value={val._id}>{val.name}</option>)}
 							</select>
 							{errors.expenseCategoryId && <p className='text-orange-700'>{errors.expenseCategoryId?.message}</p>}
 						</div>
