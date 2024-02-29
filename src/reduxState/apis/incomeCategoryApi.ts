@@ -26,7 +26,7 @@ export const incomeCategoryApi = baseCreateApi.injectEndpoints({
         url: `incomeCategory/getIncomeCategory/${queryArgs.incomeCategoryId}`,
         method: "GET",
       }),
-      providesTags: ["expenseCategory"],
+      providesTags: ["incomeCategory"],
     }),
     createIncomeCategory: builder.mutation({
       query: (queryArgs) => ({

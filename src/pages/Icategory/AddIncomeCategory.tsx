@@ -3,7 +3,6 @@ import Breadcrumb from '../../components/Breadcrumb';
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-// import { createIncomeCategory } from '../../api/apiHandler';
 import toast from 'react-hot-toast';
 import { useCreateIncomeCategoryMutation } from '../../reduxState/apis/incomeCategoryApi';
 
