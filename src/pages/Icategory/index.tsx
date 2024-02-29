@@ -1,11 +1,12 @@
 import Breadcrumb from '../../components/Breadcrumb'
 import { Table } from 'antd';
 import type { TableProps } from 'antd';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { deleteIncomeCategory, getIncomeCategory } from '../../api/apiHandler';
+import { deleteIncomeCategory } from '../../api/apiHandler';
 import { Modal } from 'antd';
 import toast from 'react-hot-toast';
+import { useDeleteIncomeCategoryMutation, useGetIncomeCategoryQuery } from '../../reduxState/apis/incomeCategoryApi';
 
 interface DataType {
 	key: string;
@@ -14,30 +15,24 @@ interface DataType {
 
 const Icategory = () => {
 	const navigate = useNavigate();
-	const [incomeCategory, setIncomeCategory] = useState([]);
+	const { data: incomeCategorydata, isLoading, isSuccess, isError, error } = useGetIncomeCategoryQuery({});
+	const [deleteIncomeCategory] = useDeleteIncomeCategoryMutation();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [curId, setCurId] = useState("");
 
-	useEffect(() => {
-		getIncomeCategory({}).then(res => {
-			if (res.data.status) {
-				setIncomeCategory(res.data.data)
-			}
-		})
-	}, [curId])
 
 	const showModal = () => {
 		setIsModalOpen(true);
 	};
 
-	const handleOk = () => {
+	const handleOk = async () => {
 		if (curId) {
-			deleteIncomeCategory({ incomeCategoryId: curId }).then(res => {
-				if (res.data.status) {
+			await deleteIncomeCategory({ incomeCategoryId: curId }).unwrap().then(res => {
+				if (res.status) {
 					setCurId("");
 					toast.success("deleted...")
-				}else{
-					toast.error(res.data.message)
+				} else {
+					toast.error(res.message)
 				}
 			}).catch(err => {
 				toast.error(err.response.data.error)
@@ -56,6 +51,12 @@ const Icategory = () => {
 			title: 'Name',
 			dataIndex: 'name',
 			key: 'name',
+			render: (text) => <a>{text}</a>
+		},
+		{
+			title: 'Total Income',
+			dataIndex: 'totalIncome',
+			key: 'totalIncome',
 			render: (text) => <a>{text}</a>
 		},
 		{
@@ -114,10 +115,10 @@ const Icategory = () => {
 		},
 	];
 
-	const data: DataType[] = incomeCategory && incomeCategory.map((val: any, index) => {
+	const data: DataType[] = isSuccess ? incomeCategorydata.data.map((val: any, index: any) => {
 		const updatedData = { ...val, key: index }
 		return updatedData
-	})
+	}) : []
 
 	return (
 		<>
@@ -141,7 +142,7 @@ const Icategory = () => {
 			<Breadcrumb pageName="Income Category" />
 			<div className="flex flex-col gap-10">
 				<div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-					<Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} showHeader={true} title={() => {
+					<Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} showHeader={true} loading={isLoading} title={() => {
 						return <div className="flex justify-between" >
 							<h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
 								{/* Top Channels */}
