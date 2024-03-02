@@ -21,7 +21,6 @@ const SignUp = () => {
   const { errors } = formState;
 
   const onSubmit = async (data: { username: string, email: string, password: string }) => {
-    console.log(data)
     await registerUser(data).unwrap().then((res: any) => {
       if (res.status) {
         toast.success(res.message)

@@ -1,8 +1,8 @@
-import Breadcrumb from '../components/Breadcrumb.tsx';
-import ChartFour from '../components/ChartFour';
-import ChartOne from '../components/ChartOne.tsx';
-import ChartThree from '../components/ChartThree.tsx';
-import ChartTwo from '../components/ChartTwo.tsx';
+import Breadcrumb from '../components/common/Breadcrumb.tsx';
+import ChartFour from '../components/common/ChartFour.tsx';
+import ChartOne from '../components/common/ChartOne.tsx';
+import ChartThree from '../components/common/ChartThree.tsx';
+import ChartTwo from '../components/common/ChartTwo.tsx';
 
 const Chart = () => {
   return (

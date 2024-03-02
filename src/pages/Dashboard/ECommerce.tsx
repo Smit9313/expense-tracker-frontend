@@ -1,20 +1,18 @@
-import CardFour from '../../components/CardFour.tsx';
+import CardFour from '../../components/common/CardFour.tsx';
 import CardOne from '../../components/dashboard/CardOne.tsx';
 import CardTwo from '../../components/dashboard/CardTwo.tsx';
-import CardThree from '../../components/CardThree.tsx';
-import ChartOne from '../../components/ChartOne.tsx';
-import ChartThree from '../../components/ChartThree.tsx';
-import ChartTwo from '../../components/ChartTwo.tsx';
-import ChatCard from '../../components/ChatCard.tsx';
-import MapOne from '../../components/MapOne.tsx';
-import TableOne from '../../components/TableOne.tsx';
+import CardThree from '../../components/common/CardThree.tsx';
+import ChartOne from '../../components/common/ChartOne.tsx';
+import ChartThree from '../../components/common/ChartThree.tsx';
+import ChartTwo from '../../components/common/ChartTwo.tsx';
+import ChatCard from '../../components/common/ChatCard.tsx';
+import MapOne from '../../components/common/MapOne.tsx';
+import TableOne from '../../components/common/TableOne.tsx';
 import { useGetTotalDataQuery } from '../../reduxState/apis/totalDataApi.ts';
 
 const ECommerce = () => {
 
   const { data: totalData, isLoading, isSuccess, isError, error } = useGetTotalDataQuery({});
-  console.log(totalData)
-
 
   return (
     <>

@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
-import Breadcrumb from '../../components/Breadcrumb';
+import Breadcrumb from '../../components/common/Breadcrumb';
 import { useGetExpenseCategoryQuery } from '../../reduxState/apis/expenseCategoryApi';
 import { useEditExpenseMutation, useGetExpensebyIdQuery } from '../../reduxState/apis/expenseApi';
 
@@ -46,7 +46,6 @@ const EditExpense = () => {
 				toast.error(res.message)
 			}
 		}).catch(err => {
-			console.log(err)
 			toast.error(err.response.data.message)
 		})
 	}

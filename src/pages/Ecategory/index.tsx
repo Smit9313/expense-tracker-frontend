@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Modal } from 'antd';
 import toast from 'react-hot-toast';
 
-import Breadcrumb from '../../components/Breadcrumb'
+import Breadcrumb from '../../components/common/Breadcrumb'
 import { useDeleteExpenseCategoryMutation, useGetExpenseCategoryQuery } from '../../reduxState/apis/expenseCategoryApi';
 
 interface DataType {

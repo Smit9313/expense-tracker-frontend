@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import toast from 'react-hot-toast';
 
-import Breadcrumb from '../../components/Breadcrumb';
+import Breadcrumb from '../../components/common/Breadcrumb';
 import { useGetIncomeCategoryQuery } from '../../reduxState/apis/incomeCategoryApi';
 import { useEditIncomeMutation, useGetIncomebyIdQuery } from '../../reduxState/apis/incomeApi';
 
@@ -47,7 +47,6 @@ const EditIncome = () => {
 				toast.error(res.message)
 			}
 		}).catch(err => {
-			console.log(err)
 			toast.error(err.response.data.message)
 		})
 	}

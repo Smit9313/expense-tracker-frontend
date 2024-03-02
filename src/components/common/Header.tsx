@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import Logo from '../images/logo/budget.png';
+import Logo from '../../images/logo/budget.png';
 import DarkModeSwitcher from './DarkModeSwitcher';
 import DropdownMessage from './DropdownMessage';
 import DropdownNotification from './DropdownNotification';

@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import toast from 'react-hot-toast';
 
-import Breadcrumb from '../../components/Breadcrumb';
+import Breadcrumb from '../../components/common/Breadcrumb';
 import { useCreateExpenseCategoryMutation } from '../../reduxState/apis/expenseCategoryApi';
 // import { createExpenseCategory } from '../../api/apiHandler';
 
@@ -23,7 +23,6 @@ const AddExpenseCategory = () => {
 
   const onSubmit = async (data: { name: string }) => {
     await createExpenseCategory(data).unwrap().then(res => {
-      console.log(res)
       if (res.status) {
         toast.success(res.message)
         navigate(-1)

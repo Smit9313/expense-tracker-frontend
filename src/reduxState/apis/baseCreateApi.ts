@@ -8,6 +8,7 @@ import {
 } from "@reduxjs/toolkit/query/react";
 import { apiV1 } from "../../utils/env";
 import { getToken } from "../../services/utils";
+import { loginRedirectCall } from '../../api/apiClient';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: apiV1,
@@ -39,6 +40,7 @@ const baseQueryWithReauth: BaseQueryFn<
       if (result.data) {
       } else {
         // logout user logic
+        loginRedirectCall();
       }
     } else {
       console.warn(result.error);

@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import toast from 'react-hot-toast';
 
 // import { editExpenseCategory, getExpenseCategory } from '../../api/apiHandler';
-import Breadcrumb from '../../components/Breadcrumb';
+import Breadcrumb from '../../components/common/Breadcrumb';
 import { useEditExpenseCategoryMutation, useGetExpenseCategoryByIdQuery } from '../../reduxState/apis/expenseCategoryApi';
 
 const EditExpenseCategory = () => {
@@ -14,7 +14,6 @@ const EditExpenseCategory = () => {
 	const { id } = useParams();
 	const { data: expenseCategory, isLoading, isSuccess, isError } = useGetExpenseCategoryByIdQuery({ expenseCategoryId: id });
 	const [editExpenseCategory] = useEditExpenseCategoryMutation();
-	console.log(expenseCategory)
 
 	const validationSchema = Yup.object().shape({
 		name: Yup.string().required("Category Name is required")

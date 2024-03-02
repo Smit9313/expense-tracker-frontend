@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import toast from 'react-hot-toast';
 
-import Breadcrumb from '../../components/Breadcrumb';
+import Breadcrumb from '../../components/common/Breadcrumb';
 import { useGetExpenseCategoryQuery } from '../../reduxState/apis/expenseCategoryApi';
 import { useCreateExpenseMutation } from '../../reduxState/apis/expenseApi';
 
@@ -34,7 +34,6 @@ const AddExpense = () => {
 				toast.error(res.message)
 			}
 		}).catch(err => {
-			console.log(err)
 			toast.error(err.response.data.message)
 		})
 	}

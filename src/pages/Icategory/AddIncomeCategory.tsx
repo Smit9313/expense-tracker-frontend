@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import Breadcrumb from '../../components/Breadcrumb';
+import Breadcrumb from '../../components/common/Breadcrumb';
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -27,7 +27,6 @@ const AddIncomeCategory = () => {
         toast.error(res.message)
       }
     }).catch(err => {
-      console.log(err)
       toast.error(err.response.data.message)
     })
   }

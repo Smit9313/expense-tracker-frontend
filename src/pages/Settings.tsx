@@ -1,8 +1,8 @@
-import Breadcrumb from '../components/Breadcrumb';
+import Breadcrumb from '../components/common/Breadcrumb';
 import userThree from '../images/user/user-03.png';
 import fireToast from '../hooks/fireToast';
-import { Table } from "../components/TableSettings";
-import { Modal } from "../components/ModalSettings";
+import { Table } from "../components/common/TableSettings";
+import { Modal } from "../components/common/ModalSettings";
 import { useState,useEffect } from "react";
 const Settings = () => {
   const [modalOpen, setModalOpen] = useState(false);

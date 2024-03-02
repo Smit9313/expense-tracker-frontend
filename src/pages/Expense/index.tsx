@@ -4,7 +4,7 @@ import type { TableProps } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-import Breadcrumb from '../../components/Breadcrumb'
+import Breadcrumb from '../../components/common/Breadcrumb'
 import { useDeleteExpenseMutation, useGetExpensesQuery } from '../../reduxState/apis/expenseApi';
 
 interface DataType {

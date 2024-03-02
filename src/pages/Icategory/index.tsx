@@ -1,4 +1,4 @@
-import Breadcrumb from '../../components/Breadcrumb'
+import Breadcrumb from '../../components/common/Breadcrumb'
 import { Table } from 'antd';
 import type { TableProps } from 'antd';
 import { useState } from 'react';
