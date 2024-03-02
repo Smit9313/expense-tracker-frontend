@@ -1,3 +1,5 @@
+import { IicategoryResponse } from '../../interfaces/icategory/Iicategory';
+import { formateICatregoryResponse } from '../../services/icategory/IncomeCategoryPage';
 import baseCreateApi from "./baseCreateApi";
 
 const incomeCategoryhandler = async ({ dispatch, queryFulfilled }: any) => {
@@ -20,6 +22,9 @@ export const incomeCategoryApi = baseCreateApi.injectEndpoints({
         incomeCategoryhandler({ dispatch, queryFulfilled });
       },
       keepUnusedDataFor: 0,
+      transformResponse: (response: IicategoryResponse) => {
+        return formateICatregoryResponse(response);
+      },
     }),
     getIncomeCategoryById: builder.query({
       query: (queryArgs) => ({

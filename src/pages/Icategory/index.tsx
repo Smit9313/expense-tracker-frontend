@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import { useDeleteIncomeCategoryMutation, useGetIncomeCategoryQuery } from '../../reduxState/apis/incomeCategoryApi';
 import EditButton from '../../components/buttons/EditButton';
 import DeleteButton from '../../components/buttons/DeleteButton';
+import { Iicategory } from '../../interfaces/icategory/Iicategory';
 
 interface DataType {
 	key: string;
@@ -72,9 +73,8 @@ const Icategory = () => {
 		},
 	];
 
-	const data: DataType[] = isSuccess ? incomeCategorydata.data.map((val: any, index: any) => {
-		const updatedData = { ...val, key: index }
-		return updatedData
+	const data: DataType[] = isSuccess ? incomeCategorydata.map((val: Iicategory, index: number) => {
+		return { ...val, key: index.toString() }
 	}) : []
 
 	return (

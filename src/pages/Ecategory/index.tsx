@@ -11,11 +11,6 @@ import EditButton from '../../components/buttons/EditButton';
 import DeleteButton from '../../components/buttons/DeleteButton';
 import { Iecategory } from '../../interfaces/ecategory/Iecategory';
 
-interface DataType {
-	key: string;
-	name: string;
-}
-
 const Ecategory = () => {
 	const navigate = useNavigate();
 	const { data: expenseCategoryData, isLoading, isSuccess } = useGetExpenseCategoryQuery({});
@@ -49,7 +44,7 @@ const Ecategory = () => {
 		setIsModalOpen(false);
 	};
 
-	const columns: TableProps<DataType>['columns'] = [
+	const columns: TableProps<Iecategory>['columns'] = [
 		{
 			title: 'Name',
 			dataIndex: 'name',
@@ -65,17 +60,18 @@ const Ecategory = () => {
 		{
 			title: 'Action',
 			key: 'action',
-			render: (_, record: any) => (
+			render: (_, record: Iecategory) =>{
+			return (
 				<div className="flex items-center space-x-3.5">
 					<EditButton handleClick={() => navigate(`/Ecategory/edit/${record._id}`)} />
 					<DeleteButton handleClick={() => { setCurId(record._id); showModal() }} />
 				</div>
-			),
+			)},
 		},
 	];
 
-	const data: DataType[] = isSuccess ? expenseCategoryData.map((val: Iecategory, index: number) => {
-		return { ...val, key: index.toString() }
+	const data: Iecategory[] = isSuccess ? expenseCategoryData.map((val: Iecategory, index: number) => {
+		return { ...val, key: index }
 	}) : []
 
 	return (
