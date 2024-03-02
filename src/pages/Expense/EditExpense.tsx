@@ -49,6 +49,7 @@ const EditExpense = () => {
 			toast.error(err.response.data.message)
 		})
 	}
+	console.log(register("expenseCategoryId"))
 
 	return (
 		<div className="mx-auto">
