@@ -9,6 +9,7 @@ import Breadcrumb from '../../components/common/Breadcrumb'
 import { useDeleteExpenseCategoryMutation, useGetExpenseCategoryQuery } from '../../reduxState/apis/expenseCategoryApi';
 import EditButton from '../../components/buttons/EditButton';
 import DeleteButton from '../../components/buttons/DeleteButton';
+import { Iecategory } from '../../interfaces/ecategory/Iecategory';
 
 interface DataType {
 	key: string;
@@ -19,8 +20,8 @@ const Ecategory = () => {
 	const navigate = useNavigate();
 	const { data: expenseCategoryData, isLoading, isSuccess } = useGetExpenseCategoryQuery({});
 	const [deleteExpenseCategory] = useDeleteExpenseCategoryMutation();
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [curId, setCurId] = useState("");
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [curId, setCurId] = useState<string>("");
 
 	const showModal = () => {
 		setIsModalOpen(true);
@@ -28,7 +29,7 @@ const Ecategory = () => {
 
 	const handleOk = async () => {
 		if (curId) {
-			await deleteExpenseCategory({ expenseCategoryId: curId }).unwrap().then((res: any) => {
+			await deleteExpenseCategory({ expenseCategoryId: curId }).unwrap().then(res => {
 				if (res.status) {
 					setCurId("");
 					toast.success("deleted...")
@@ -73,9 +74,8 @@ const Ecategory = () => {
 		},
 	];
 
-	const data: DataType[] = isSuccess ? expenseCategoryData.data.map((val: any, index: any) => {
-		const updatedData = { ...val, key: index }
-		return updatedData
+	const data: DataType[] = isSuccess ? expenseCategoryData.map((val: Iecategory, index: number) => {
+		return { ...val, key: index.toString() }
 	}) : []
 
 	return (

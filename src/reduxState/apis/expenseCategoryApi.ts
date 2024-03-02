@@ -1,3 +1,5 @@
+import { IecategoryResponse } from "../../interfaces/ecategory/Iecategory";
+import { formateECatregoryResponse } from "../../services/ecategory/ExpenseCategoryPage";
 import baseCreateApi from "./baseCreateApi";
 
 const expeneseCategoryhandler = async ({ dispatch, queryFulfilled }: any) => {
@@ -16,10 +18,13 @@ export const expenseCategoryApi = baseCreateApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["expenseCategory"],
+      keepUnusedDataFor: 0,
       onQueryStarted(_args, { dispatch, queryFulfilled }) {
         expeneseCategoryhandler({ dispatch, queryFulfilled });
       },
-      keepUnusedDataFor: 0,
+      transformResponse: (response: IecategoryResponse) => {
+        return formateECatregoryResponse(response);
+      },
     }),
     getExpenseCategoryById: builder.query({
       query: (queryArgs) => ({

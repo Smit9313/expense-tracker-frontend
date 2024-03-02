@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -11,7 +10,7 @@ import { ISignin } from '../../interfaces/auth/ISignin';
 import EmailSvg from '../../components/svgs/EmailSvg';
 import LockSvg from '../../components/svgs/LockSvg';
 
-const SignIn: React.FC = () => {
+const SignIn = () => {
   const navigate = useNavigate();
   const [login] = useLoginMutation();
 
