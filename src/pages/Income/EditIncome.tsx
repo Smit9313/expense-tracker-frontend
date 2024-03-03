@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import Breadcrumb from '../../components/common/Breadcrumb';
 import { useGetIncomeCategoryQuery } from '../../reduxState/apis/incomeCategoryApi';
 import { useEditIncomeMutation, useGetIncomebyIdQuery } from '../../reduxState/apis/incomeApi';
+import { Iicategory } from '../../interfaces/icategory/Iicategory';
 
 const EditIncome = () => {
 	const navigate = useNavigate();
@@ -85,7 +86,7 @@ const EditIncome = () => {
 								id='incomeCategoryId'
 								{...register("incomeCategoryId")}
 							>
-								{isSuccess && incomeCategoryData.data.map((val: any) => <option key={val._id} value={val._id}>{val.name}</option>)}
+								{isSuccess && incomeCategoryData.map((val: Iicategory) => <option key={val._id} value={val._id}>{val.name}</option>)}
 							</select>
 							{errors.incomeCategoryId && <p className='text-orange-700'>{errors.incomeCategoryId?.message}</p>}
 						</div>

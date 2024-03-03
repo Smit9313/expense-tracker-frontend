@@ -9,6 +9,10 @@ export const expenseApi = baseCreateApi.injectEndpoints({
       }),
       keepUnusedDataFor: 0,
       providesTags: ["expense"],
+      transformResponse: (response: any) => {
+        console.log(response)
+        return response;
+      },
     }),
     getExpensebyId: builder.query({
       query: (queryArgs) => ({

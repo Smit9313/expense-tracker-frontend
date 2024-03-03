@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import Breadcrumb from '../../components/common/Breadcrumb';
 import { useGetExpenseCategoryQuery } from '../../reduxState/apis/expenseCategoryApi';
 import { useEditExpenseMutation, useGetExpensebyIdQuery } from '../../reduxState/apis/expenseApi';
+import { Iecategory } from '../../interfaces/ecategory/Iecategory';
 
 const EditExpense = () => {
 	const navigate = useNavigate();
@@ -29,6 +30,7 @@ const EditExpense = () => {
 
 	useEffect(() => {
 		if (expenseIsSuccess) {
+			console.log(expenseData)
 			setValue("expenseDate", expenseData.data.expenseDate.split("T")[0])
 			setValue("expenseDetails", expenseData.data.expenseDetails)
 			setValue("expenseAmount", expenseData.data.expenseAmount)
@@ -49,7 +51,6 @@ const EditExpense = () => {
 			toast.error(err.response.data.message)
 		})
 	}
-	console.log(register("expenseCategoryId"))
 
 	return (
 		<div className="mx-auto">
@@ -85,7 +86,7 @@ const EditExpense = () => {
 								id='expenseCategoryId'
 								{...register("expenseCategoryId")}
 							>
-								{isSuccess && expenseCategoryData.data.map((val: any) => <option key={val._id} value={val._id}>{val.name}</option>)}
+								{isSuccess && expenseCategoryData.map((val: Iecategory) => <option key={val._id} value={val._id}>{val.name}</option>)}
 							</select>
 							{errors.expenseCategoryId && <p className='text-orange-700'>{errors.expenseCategoryId?.message}</p>}
 						</div>
