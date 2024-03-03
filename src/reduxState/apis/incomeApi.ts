@@ -1,4 +1,5 @@
 import baseCreateApi from "./baseCreateApi";
+import { formateIncomeResponse } from '../../services/income/IncomePage';
 
 export const incomeApi = baseCreateApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -9,6 +10,9 @@ export const incomeApi = baseCreateApi.injectEndpoints({
       }),
       keepUnusedDataFor: 0,
       providesTags: ["income"],
+      transformResponse: (response: any) => {
+        return formateIncomeResponse(response);
+      },
     }),
     getIncomebyId: builder.query({
       query: (queryArgs) => ({

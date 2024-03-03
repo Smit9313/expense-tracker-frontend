@@ -72,7 +72,7 @@ const AddExpense = () => {
 								id='expenseCategoryId'
 								{...register("incomeCategoryId")}
 							>
-								{isSuccess && incomeCategoryData.data.map((val: any) => <option key={val._id} value={val._id}>{val.name}</option>)}
+								{isSuccess && incomeCategoryData.map((val: any) => <option key={val._id} value={val._id}>{val.name}</option>)}
 							</select>
 							{errors.incomeCategoryId && <p className='text-orange-700'>{errors.incomeCategoryId?.message}</p>}
 						</div>

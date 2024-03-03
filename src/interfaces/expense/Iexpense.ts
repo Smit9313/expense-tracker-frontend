@@ -1,17 +1,19 @@
-export interface Iicategory {
+export interface Iexpense {
 	name: string;
-	totalExpense: number;
+	expenseDate: string;
+	expenseDetails: string;
+	expenseAmount: number;
 	_id: string;
   }
   
-  export interface IicategoryData extends Iicategory {
+  export interface IexpenseData extends Iexpense {
 	__v: number;
 	userId: string;
   }
   
-  export interface IicategoryResponse {
+  export interface IexpenseResponse {
 	code: number;
-	data: IicategoryData[];
+	data: IexpenseData[];
 	message: string;
 	status: boolean;
   }

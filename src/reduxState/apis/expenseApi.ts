@@ -1,3 +1,5 @@
+import { IexpenseResponse } from "../../interfaces/expense/Iexpense";
+import { formateExpenseResponse } from "../../services/expense/ExpensePage";
 import baseCreateApi from "./baseCreateApi";
 
 export const expenseApi = baseCreateApi.injectEndpoints({
@@ -9,9 +11,9 @@ export const expenseApi = baseCreateApi.injectEndpoints({
       }),
       keepUnusedDataFor: 0,
       providesTags: ["expense"],
-      transformResponse: (response: any) => {
-        console.log(response)
-        return response;
+      transformResponse: (response: IexpenseResponse) => {
+        console.log(response);
+        return formateExpenseResponse(response);
       },
     }),
     getExpensebyId: builder.query({

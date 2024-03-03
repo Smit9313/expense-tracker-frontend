@@ -2,13 +2,11 @@ import baseCreateApi from "./baseCreateApi";
 
 const getheaders = () => {
   return {
-    Accept: "application/vnd.api+json",
-    "Content-Type": "application/vnd.api+json",
+    Accept: "application/json",
   };
 };
 
 export const authApi = baseCreateApi.injectEndpoints({
-  
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (queryArgs) => ({
@@ -22,11 +20,7 @@ export const authApi = baseCreateApi.injectEndpoints({
         url: "user/register",
         method: "POST",
         headers: getheaders(),
-        body: JSON.stringify({
-          data: {
-            ...queryArgs
-          }
-        }),
+        body: queryArgs,
       }),
     }),
   }),
