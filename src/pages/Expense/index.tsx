@@ -8,15 +8,7 @@ import Breadcrumb from '../../components/common/Breadcrumb'
 import { useDeleteExpenseMutation, useGetExpensesQuery } from '../../reduxState/apis/expenseApi';
 import EditButton from '../../components/buttons/EditButton';
 import DeleteButton from '../../components/buttons/DeleteButton';
-
-interface DataType {
-	key: number;
-	date: string;
-	category: string;
-	amount: number;
-	details: string;
-}
-
+import { Iexpense, IexpenseDisplay } from '../../interfaces/expense/Iexpense';
 
 const ExpenseList = () => {
 	const navigate = useNavigate();
@@ -50,7 +42,7 @@ const ExpenseList = () => {
 		setIsModalOpen(false);
 	};
 
-	const columns: TableProps<DataType>['columns'] = [
+	const columns: TableProps<IexpenseDisplay>['columns'] = [
 		{
 			title: 'Date',
 			dataIndex: 'date',
@@ -61,13 +53,10 @@ const ExpenseList = () => {
 			title: 'Category',
 			key: 'category',
 			dataIndex: 'category',
-			render: (_, { category }: any) => (
-				<>
-					<Tag color={"green"}>
-						{category.toUpperCase()}
-					</Tag>
-
-				</>
+			render: (_, { category }: { category: string }) => (
+				<Tag color={"green"}>
+					{category.toUpperCase()}
+				</Tag>
 			),
 		},
 		{
@@ -75,7 +64,7 @@ const ExpenseList = () => {
 			dataIndex: 'amount',
 			key: 'amount',
 			render: (text) => <a>{text}</a>,
-			sorter: (a: any, b: any) => a.amount - b.amount,
+			sorter: (a: IexpenseDisplay, b: IexpenseDisplay) => a.amount - b.amount,
 		},
 		{
 			title: 'Details',
@@ -86,7 +75,7 @@ const ExpenseList = () => {
 		{
 			title: 'Action',
 			key: 'action',
-			render: (_, record: any) => (
+			render: (_, record: IexpenseDisplay) => (
 				<div className="flex items-center space-x-3.5">
 					<EditButton handleClick={() => navigate(`/expense/edit/${record._id}`)} />
 					<DeleteButton handleClick={() => { setCurId(record._id); showModal() }} />
@@ -95,7 +84,7 @@ const ExpenseList = () => {
 		}
 	];
 
-	const data: DataType[] = isSuccess ? expenseData.data.map((val: any, index: any) => {
+	const data: IexpenseDisplay[] = isSuccess ? expenseData.map((val: Iexpense, index: number) => {
 		const updatedData = { date: val.expenseDate, category: val.expenseCategoryId.name, amount: val.expenseAmount, details: val.expenseDetails, _id: val._id, key: index }
 		return updatedData
 	}) : []
