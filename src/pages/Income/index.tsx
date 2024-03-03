@@ -8,15 +8,7 @@ import Breadcrumb from '../../components/common/Breadcrumb'
 import { useDeleteIncomeMutation, useGetIncomesQuery } from '../../reduxState/apis/incomeApi';
 import EditButton from '../../components/buttons/EditButton';
 import DeleteButton from '../../components/buttons/DeleteButton';
-
-interface DataType {
-	key: number;
-	date: string;
-	category: string;
-	amount: number;
-	details: string;
-}
-
+import { Iincome, IincomeDisplay } from '../../interfaces/income/Iincome';
 
 const IncomeList = () => {
 	const navigate = useNavigate();
@@ -51,7 +43,7 @@ const IncomeList = () => {
 		setIsModalOpen(false);
 	};
 
-	const columns: TableProps<DataType>['columns'] = [
+	const columns: TableProps<IincomeDisplay>['columns'] = [
 		{
 			title: 'Date',
 			dataIndex: 'date',
@@ -95,7 +87,7 @@ const IncomeList = () => {
 		}
 	];
 
-	const data: DataType[] = isSuccess ? incomeData.data.map((val: any, index: any) => {
+	const data: IincomeDisplay[] = isSuccess ? incomeData.map((val: Iincome, index: number) => {
 		const updatedData = { date: val.incomeDate, category: val.incomeCategoryId.name, amount: val.incomeAmount, details: val.incomeDetails, _id: val._id, key: index }
 		return updatedData
 	}) : []

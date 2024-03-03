@@ -1,5 +1,6 @@
 import baseCreateApi from "./baseCreateApi";
 import { formateIncomeResponse } from '../../services/income/IncomePage';
+import { IincomeResponse } from '../../interfaces/income/Iincome';
 
 export const incomeApi = baseCreateApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -10,7 +11,7 @@ export const incomeApi = baseCreateApi.injectEndpoints({
       }),
       keepUnusedDataFor: 0,
       providesTags: ["income"],
-      transformResponse: (response: any) => {
+      transformResponse: (response: IincomeResponse) => {
         return formateIncomeResponse(response);
       },
     }),

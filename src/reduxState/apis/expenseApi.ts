@@ -12,7 +12,6 @@ export const expenseApi = baseCreateApi.injectEndpoints({
       keepUnusedDataFor: 0,
       providesTags: ["expense"],
       transformResponse: (response: IexpenseResponse) => {
-        console.log(response);
         return formateExpenseResponse(response);
       },
     }),

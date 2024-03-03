@@ -10,8 +10,8 @@ export const formateExpenseResponse = (response: IexpenseResponse) => {
       _id: val._id,
       expenseCategoryId: {
         _id: val.expenseCategoryId._id,
-        name: val.expenseCategoryId.name,
-      },
+        name: val.expenseCategoryId.name
+      }
     };
   });
 
