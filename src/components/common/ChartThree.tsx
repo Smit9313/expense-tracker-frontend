@@ -6,6 +6,11 @@ interface ChartThreeState {
   series: number[];
 }
 
+interface IChartThree{
+  income: number;
+  expense: number
+}
+
 const options: ApexOptions = {
   chart: {
     type: 'donut',
@@ -48,9 +53,9 @@ const options: ApexOptions = {
   ],
 };
 
-const ChartThree: React.FC = () => {
+const ChartThree: React.FC<IChartThree> = ({income, expense}) => {
   const [state, setState] = useState<ChartThreeState>({
-    series: [29980, 1022099],
+    series: [income, expense],
   });
 
   return (

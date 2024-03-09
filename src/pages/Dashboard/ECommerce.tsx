@@ -9,21 +9,33 @@ import ChatCard from '../../components/common/ChatCard.tsx';
 import MapOne from '../../components/common/MapOne.tsx';
 import TableOne from '../../components/common/TableOne.tsx';
 import { useGetTotalDataQuery } from '../../reduxState/apis/totalDataApi.ts';
+import CardLoader from '../../components/cardLoader/CardLoader.tsx';
 
 const ECommerce = () => {
-  const { data: totalData } = useGetTotalDataQuery({});
+  const { data: totalData, isLoading } = useGetTotalDataQuery({});
+  console.log(totalData)
+  console.log(isLoading)
 
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-        <CardOne totalExpense={totalData?.data.totalExpense} />
-        <CardTwo totalIncome={totalData?.data.totalIncome} />
+        {totalData?.totalExpense && totalData.totalIncome ? <>
+          <CardOne totalExpense={totalData?.totalExpense} />
+          <CardTwo totalIncome={totalData?.totalIncome} />
+        </>
+          :
+          <>
+            <CardLoader />
+            <CardLoader />
+          </>
+        }
+
         <CardThree />
         <CardFour />
       </div>
 
       <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
-        <ChartThree />
+        <ChartThree income={10000} expense={20000} />
         <ChartOne />
         <MapOne />
         <ChartTwo />
