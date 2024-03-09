@@ -7,9 +7,12 @@ const CardLoader = () => {
 			</div>
 			<div className="mt-4 flex items-end justify-between">
 				<div>
-					<Skeleton.Input active={true} size="default" style={{ marginBottom: "10px" }} />
-					<br />
-					<Skeleton.Input active={true} size="small" />
+					<div>
+						<Skeleton.Input active={true} size="small" style={{ marginBottom: "5px" }} />
+					</div>
+					<div>
+						<Skeleton.Input active={true} size="small" />
+					</div>
 				</div>
 				<span className="flex items-center gap-1 text-sm font-medium text-meta-3">
 					<Skeleton.Button />

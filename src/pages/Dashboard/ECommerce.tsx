@@ -10,11 +10,10 @@ import MapOne from '../../components/common/MapOne.tsx';
 import TableOne from '../../components/common/TableOne.tsx';
 import { useGetTotalDataQuery } from '../../reduxState/apis/totalDataApi.ts';
 import CardLoader from '../../components/cardLoader/CardLoader.tsx';
+import ChartThreeLoader from '../../components/chartLoader/ChartThreeLoader.tsx';
 
 const ECommerce = () => {
-  const { data: totalData, isLoading } = useGetTotalDataQuery({});
-  console.log(totalData)
-  console.log(isLoading)
+  const { data: totalData } = useGetTotalDataQuery({});
 
   return (
     <>
@@ -22,20 +21,25 @@ const ECommerce = () => {
         {totalData?.totalExpense && totalData.totalIncome ? <>
           <CardOne totalExpense={totalData?.totalExpense} />
           <CardTwo totalIncome={totalData?.totalIncome} />
+          <CardThree />
+          <CardFour />
         </>
           :
           <>
             <CardLoader />
             <CardLoader />
+            <CardLoader />
+            <CardLoader />
           </>
         }
 
-        <CardThree />
-        <CardFour />
       </div>
 
       <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
-        <ChartThree income={10000} expense={20000} />
+        {totalData?.totalExpense && totalData.totalIncome ?
+          <ChartThree income={totalData?.totalIncome} expense={totalData?.totalExpense} />
+          : <ChartThreeLoader />
+        }
         <ChartOne />
         <MapOne />
         <ChartTwo />

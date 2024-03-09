@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
 interface ChartThreeState {
-  series: number[];
+  series: number[] | any;
 }
 
-interface IChartThree{
-  income: number;
-  expense: number
+interface IChartThree {
+  income: number | undefined;
+  expense: number | undefined;
 }
 
 const options: ApexOptions = {
@@ -53,8 +53,8 @@ const options: ApexOptions = {
   ],
 };
 
-const ChartThree: React.FC<IChartThree> = ({income, expense}) => {
-  const [state, setState] = useState<ChartThreeState>({
+const ChartThree: React.FC<IChartThree> = ({ income, expense }) => {
+  const [state] = useState<ChartThreeState>({
     series: [income, expense],
   });
 
@@ -63,7 +63,7 @@ const ChartThree: React.FC<IChartThree> = ({income, expense}) => {
       <div className="mb-3 justify-between gap-4 sm:flex">
         <div>
           <h5 className="text-xl font-semibold text-black dark:text-white">
-            Visitors Analytics
+            Analytics
           </h5>
         </div>
         <div>
@@ -102,52 +102,14 @@ const ChartThree: React.FC<IChartThree> = ({income, expense}) => {
 
       <div className="mb-2 xl:mt-15">
         <div id="chartThree" className="mx-auto flex justify-center">
-          <ReactApexChart
-            options={options}
-            series={state.series}
-            type="donut"
-          />
+            <ReactApexChart
+              options={options}
+              series={state.series}
+              type="donut"
+            />
+
         </div>
       </div>
-
-      {/* <div className="-mx-8 flex flex-wrap items-center justify-center gap-y-3">
-        <div className="w-full px-8 sm:w-1/2">
-          <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-primary"></span>
-            <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Desktop </span>
-              <span> 65% </span>
-            </p>
-          </div>
-        </div>
-        <div className="w-full px-8 sm:w-1/2">
-          <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#6577F3]"></span>
-            <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Tablet </span>
-              <span> 34% </span>
-            </p>
-          </div>
-        </div>
-        <div className="w-full px-8 sm:w-1/2">
-          <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#8FD0EF]"></span>
-            <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Mobile </span>
-              <span> 45% </span>
-            </p>
-          </div>
-        </div>
-        <div className="w-full px-8 sm:w-1/2">
-          <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#0FADCF]"></span>
-            <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Unknown </span>
-              <span> 12% </span>
-            </p>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 };
