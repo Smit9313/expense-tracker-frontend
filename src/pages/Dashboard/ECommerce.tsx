@@ -11,8 +11,7 @@ import TableOne from '../../components/common/TableOne.tsx';
 import { useGetTotalDataQuery } from '../../reduxState/apis/totalDataApi.ts';
 
 const ECommerce = () => {
-
-  const { data: totalData, isLoading, isSuccess, isError, error } = useGetTotalDataQuery({});
+  const { data: totalData } = useGetTotalDataQuery({});
 
   return (
     <>
@@ -24,10 +23,10 @@ const ECommerce = () => {
       </div>
 
       <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
-        <ChartOne />
-        <ChartTwo />
         <ChartThree />
+        <ChartOne />
         <MapOne />
+        <ChartTwo />
         <div className="col-span-12 xl:col-span-8">
           <TableOne />
         </div>

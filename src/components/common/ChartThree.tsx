@@ -10,8 +10,8 @@ const options: ApexOptions = {
   chart: {
     type: 'donut',
   },
-  colors: ['#10B981', '#375E83', '#259AE6', '#FFA70B'],
-  labels: ['Remote', 'Hybrid', 'Onsite', 'Leave'],
+  colors: ['#10B981', '#259AE6'],
+  labels: ['Income', 'Expense'],
   legend: {
     show: true,
     position: 'bottom',
@@ -50,11 +50,11 @@ const options: ApexOptions = {
 
 const ChartThree: React.FC = () => {
   const [state, setState] = useState<ChartThreeState>({
-    series: [65, 34, 12, 56],
+    series: [29980, 1022099],
   });
 
   return (
-    <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-5">
+    <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-4">
       <div className="mb-3 justify-between gap-4 sm:flex">
         <div>
           <h5 className="text-xl font-semibold text-black dark:text-white">
@@ -95,7 +95,7 @@ const ChartThree: React.FC = () => {
         </div>
       </div>
 
-      <div className="mb-2">
+      <div className="mb-2 xl:mt-15">
         <div id="chartThree" className="mx-auto flex justify-center">
           <ReactApexChart
             options={options}
@@ -105,7 +105,7 @@ const ChartThree: React.FC = () => {
         </div>
       </div>
 
-      <div className="-mx-8 flex flex-wrap items-center justify-center gap-y-3">
+      {/* <div className="-mx-8 flex flex-wrap items-center justify-center gap-y-3">
         <div className="w-full px-8 sm:w-1/2">
           <div className="flex w-full items-center">
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-primary"></span>
@@ -142,7 +142,7 @@ const ChartThree: React.FC = () => {
             </p>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

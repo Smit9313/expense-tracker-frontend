@@ -43,13 +43,13 @@ const baseQueryWithReauth: BaseQueryFn<
         loginRedirectCall();
       }
     } else {
-      console.warn(result.error);
+      console.warn(result);
       if (
-        result.error.status !== 401 &&
-        result.error.status !== 403 &&
-        result.error.status !== 422
-      ) {
-        // do something with errors
+        result.error.status === 401 ||
+        result.error.status === 403 ||
+        result.error.status === 422
+        ) {
+          // do something with errors
       }
     }
   }
