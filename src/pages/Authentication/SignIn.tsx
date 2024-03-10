@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -9,9 +9,11 @@ import AuthSvg from '../../components/svgs/AuthSvg';
 import { ISignin } from '../../interfaces/auth/ISignin';
 import EmailSvg from '../../components/svgs/EmailSvg';
 import LockSvg from '../../components/svgs/LockSvg';
+import { useEffect } from 'react';
 
 const SignIn = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [login] = useLoginMutation();
 
   const validationSchema = Yup.object().shape({
@@ -24,6 +26,14 @@ const SignIn = () => {
   const { register, handleSubmit, formState } = useForm(formOptions);
   const { errors } = formState;
 
+  useEffect(() => {
+    if (location.pathname === "/auth/signin" && location.state) {
+      if (!location.state?.res?.status && location.state?.res?.code !== 404) {
+        toast.error(location.state.res.message)
+      }
+    }
+  }, [])
+
   const onSubmit = async (data: ISignin) => {
     await login(data).unwrap().then((res) => {
       if (res.status) {
@@ -35,6 +45,10 @@ const SignIn = () => {
     }).catch((err: any) => {
       toast.error(err.data.message)
     })
+  }
+
+  const handleGoogleSubmit = () => {
+    window.open("http://localhost:8080/auth/google", "_self")
   }
 
   return (
@@ -103,7 +117,7 @@ const SignIn = () => {
                 />
               </div>
 
-              <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
+              <button type='button' className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50" onClick={handleGoogleSubmit}>
                 <span>
                   <svg
                     width="20"

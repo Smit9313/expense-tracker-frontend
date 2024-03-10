@@ -9,7 +9,7 @@ import './index.css';
 import './satoshi.css';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <ReduxProvider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <Router>
@@ -17,5 +17,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         </Router>
       </PersistGate>
     </ReduxProvider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );

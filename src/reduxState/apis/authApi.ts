@@ -3,12 +3,14 @@ import baseCreateApi from "./baseCreateApi";
 const getheaders = () => {
   return {
     Accept: "application/json",
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Credentials": "true",
   };
 };
 
 export const authApi = baseCreateApi.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation({
+    login: builder.mutation({ 
       query: (queryArgs) => ({
         url: "user/login",
         method: "POST",
@@ -19,11 +21,30 @@ export const authApi = baseCreateApi.injectEndpoints({
       query: (queryArgs) => ({
         url: "user/register",
         method: "POST",
-        headers: getheaders(),
+        // headers: getheaders(),
         body: queryArgs,
+      }),
+    }),
+    googleAuth: builder.query({
+      query: () => ({
+        url: "auth/login/success",
+        method: "GET",
+        headers: getheaders(),
+      }),
+    }),
+    googleAuthLogout: builder.query({
+      query: () => ({
+        url: "auth/logout",
+        method: "GET",
+        headers: getheaders(),
       }),
     }),
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation } = authApi;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useLazyGoogleAuthQuery,
+  useLazyGoogleAuthLogoutQuery,
+} = authApi;
