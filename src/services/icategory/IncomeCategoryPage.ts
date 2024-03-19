@@ -5,7 +5,7 @@ export const formateICatregoryResponse = (response: IicategoryResponse) => {
 	return {
 		_id: val._id,
 		name: val.name,
-		totalExpense: val.totalExpense,
+		totalIncome: val.totalIncome,
 	}
   });
 

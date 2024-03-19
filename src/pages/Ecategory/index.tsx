@@ -56,13 +56,13 @@ const Ecategory = () => {
 			title: 'Name',
 			dataIndex: 'name',
 			key: 'name',
-			render: (text) => <a>{text}</a>
+			render: (text) => <p>{text}</p>
 		},
 		{
 			title: 'Total Expense',
 			dataIndex: 'totalExpense',
 			key: 'totalExpense',
-			render: (text) => <a>{text}</a>
+			render: (text) => <p>{text}</p>
 		},
 		{
 			title: 'Action',

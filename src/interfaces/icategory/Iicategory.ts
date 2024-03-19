@@ -1,6 +1,6 @@
 export interface Iicategory {
 	name: string;
-	totalExpense: number;
+	totalIncome: number;
 	_id: string;
   }
   

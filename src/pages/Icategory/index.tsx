@@ -60,13 +60,13 @@ const Icategory = () => {
 			title: 'Name',
 			dataIndex: 'name',
 			key: 'name',
-			render: (text) => <a>{text}</a>
+			render: (text) => <p>{text}</p>
 		},
 		{
 			title: 'Total Income',
 			dataIndex: 'totalIncome',
 			key: 'totalIncome',
-			render: (text) => <a>{text}</a>
+			render: (text) => <p>{text}</p>
 		},
 		{
 			title: 'Action',
