@@ -14,7 +14,7 @@ export const incomeCategoryApi = baseCreateApi.injectEndpoints({
   endpoints: (builder) => ({
     getIncomeCategory: builder.query({
       query: () => ({
-        url: "incomeCategory/getIncomeCategory",
+        url: "incomeCategory",
         method: "GET",
       }),
       providesTags: ["incomeCategory"],
@@ -28,21 +28,21 @@ export const incomeCategoryApi = baseCreateApi.injectEndpoints({
     }),
     getIncomeCategoryById: builder.query({
       query: (queryArgs) => ({
-        url: `incomeCategory/getIncomeCategory/${queryArgs.incomeCategoryId}`,
+        url: `incomeCategory/${queryArgs.incomeCategoryId}`,
         method: "GET",
       }),
       providesTags: ["incomeCategory"],
     }),
     createIncomeCategory: builder.mutation({
       query: (queryArgs) => ({
-        url: "incomeCategory/createIncomeCategory",
+        url: "incomeCategory",
         method: "POST",
         body: queryArgs,
       }),
     }),
     editIncomeCategory: builder.mutation({
       query: (queryArgs) => ({
-        url: `incomeCategory/editIncomeCategory/${queryArgs.incomeCategoryId}`,
+        url: `incomeCategory/${queryArgs.incomeCategoryId}`,
         method: "PATCH",
         body: queryArgs,
       }),
@@ -50,7 +50,7 @@ export const incomeCategoryApi = baseCreateApi.injectEndpoints({
     }),
     deleteIncomeCategory: builder.mutation({
       query: (queryArgs) => ({
-        url: `incomeCategory/deleteIncomeCategory/${queryArgs.incomeCategoryId}`,
+        url: `incomeCategory/${queryArgs.incomeCategoryId}`,
         method: "DELETE",
         body: queryArgs,
       }),

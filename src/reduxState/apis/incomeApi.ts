@@ -6,7 +6,7 @@ export const incomeApi = baseCreateApi.injectEndpoints({
   endpoints: (builder) => ({
     getIncomes: builder.query({
       query: () => ({
-        url: "income/getIncomes",
+        url: "income",
         method: "GET",
       }),
       keepUnusedDataFor: 0,
@@ -17,28 +17,28 @@ export const incomeApi = baseCreateApi.injectEndpoints({
     }),
     getIncomebyId: builder.query({
       query: (queryArgs) => ({
-        url: `income/getIncomes/${queryArgs.incomeId}`,
+        url: `income/${queryArgs.incomeId}`,
         method: "GET",
       }),
       providesTags: ["income"],
     }),
     createIncome: builder.mutation({
       query: (queryArgs) => ({
-        url: "income/createIncome",
+        url: "income",
         method: "POST",
         body: queryArgs,
       }),
     }),
     editIncome: builder.mutation({
       query: (queryArgs) => ({
-        url: `income/editIncome/${queryArgs.incomeId}`,
+        url: `income/${queryArgs.incomeId}`,
         method: "PATCH",
         body: queryArgs,
       }),
     }),
     deleteIncome: builder.mutation({
       query: (queryArgs) => ({
-        url: `income/deleteIncome/${queryArgs.incomeId}`,
+        url: `income/${queryArgs.incomeId}`,
         method: "DELETE",
         body: queryArgs,
       }),

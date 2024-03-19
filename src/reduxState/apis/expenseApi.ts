@@ -6,7 +6,7 @@ export const expenseApi = baseCreateApi.injectEndpoints({
   endpoints: (builder) => ({
     getExpenses: builder.query({
       query: () => ({
-        url: "expense/getExpenses",
+        url: "expense",
         method: "GET",
       }),
       keepUnusedDataFor: 0,
@@ -17,28 +17,28 @@ export const expenseApi = baseCreateApi.injectEndpoints({
     }),
     getExpensebyId: builder.query({
       query: (queryArgs) => ({
-        url: `expense/getExpenses/${queryArgs.expenseId}`,
+        url: `expense/${queryArgs.expenseId}`,
         method: "GET",
       }),
       providesTags: ["expense"],
     }),
     createExpense: builder.mutation({
       query: (queryArgs) => ({
-        url: "expense/createExpense",
+        url: "expense",
         method: "POST",
         body: queryArgs,
       }),
     }),
     editExpense: builder.mutation({
       query: (queryArgs) => ({
-        url: `expense/editExpense/${queryArgs.expenseId}`,
+        url: `expense/${queryArgs.expenseId}`,
         method: "PATCH",
         body: queryArgs,
       }),
     }),
     deleteExpense: builder.mutation({
       query: (queryArgs) => ({
-        url: `expense/deleteExpense/${queryArgs.expenseId}`,
+        url: `expense/${queryArgs.expenseId}`,
         method: "DELETE",
         body: queryArgs,
       }),

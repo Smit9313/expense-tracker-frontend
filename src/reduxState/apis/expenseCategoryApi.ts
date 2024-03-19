@@ -14,7 +14,7 @@ export const expenseCategoryApi = baseCreateApi.injectEndpoints({
   endpoints: (builder) => ({
     getExpenseCategory: builder.query({
       query: () => ({
-        url: "expenseCategory/getExpenseCategory",
+        url: "expenseCategory",
         method: "GET",
       }),
       providesTags: ["expenseCategory"],
@@ -28,21 +28,21 @@ export const expenseCategoryApi = baseCreateApi.injectEndpoints({
     }),
     getExpenseCategoryById: builder.query({
       query: (queryArgs) => ({
-        url: `expenseCategory/getExpenseCategory/${queryArgs.expenseCategoryId}`,
+        url: `expenseCategory/${queryArgs.expenseCategoryId}`,
         method: "GET",
       }),
       providesTags: ["expenseCategory"],
     }),
     createExpenseCategory: builder.mutation({
       query: (queryArgs) => ({
-        url: "expenseCategory/createExpenseCategory",
+        url: "expenseCategory",
         method: "POST",
         body: queryArgs,
       }),
     }),
     editExpenseCategory: builder.mutation({
       query: (queryArgs) => ({
-        url: `expenseCategory/editExpenseCategory/${queryArgs.expenseCategoryId}`,
+        url: `expenseCategory/${queryArgs.expenseCategoryId}`,
         method: "PATCH",
         body: queryArgs,
       }),
@@ -50,7 +50,7 @@ export const expenseCategoryApi = baseCreateApi.injectEndpoints({
     }),
     deleteExpenseCategory: builder.mutation({
       query: (queryArgs) => ({
-        url: `expenseCategory/deleteExpenseCategory/${queryArgs.expenseCategoryId}`,
+        url: `expenseCategory/${queryArgs.expenseCategoryId}`,
         method: "DELETE",
         body: queryArgs,
       }),
