@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal, Table, Tag } from 'antd';
 import type { TableProps } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 import Breadcrumb from '../../components/common/Breadcrumb'
@@ -12,36 +12,44 @@ import { Iincome, IincomeDisplay } from '../../interfaces/income/Iincome';
 
 const IncomeList = () => {
 	const navigate = useNavigate();
+	const [searchParams, setSearchParams] = useSearchParams();
 	const { data: incomeData, isLoading, isSuccess } = useGetIncomesQuery({});
 	const [deleteIncome] = useDeleteIncomeMutation();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [curId, setCurId] = useState("");
+	const isDelete = searchParams.get("delete")
 
-	const showModal = () => {
-		setIsModalOpen(true);
-	};
+	useEffect(() => {
+		if (isDelete) {
+			setIsModalOpen(true)
+		}
+	}, [searchParams])
 
 	const handleOk = async () => {
-		if (curId) {
-			console.log(curId)
-			await deleteIncome({ incomeId: curId }).unwrap().then(res => {
+		if (isDelete) {
+			await deleteIncome({ incomeId: isDelete }).unwrap().then(res => {
 				if (res.status) {
-					setCurId("");
 					toast.success(res.message)
 				} else {
 					toast.error(res.message)
 				}
 			}).catch(err => {
 				toast.error(err.response.data.error)
+			}).finally(() => {
+				setIsModalOpen(false);
+				setSearchParams('')
 			})
 		}
-		setIsModalOpen(false);
 	};
 
 	const handleCancel = () => {
-		setCurId("");
+		setSearchParams('')
 		setIsModalOpen(false);
 	};
+
+	const handleModal = (id: string) => {
+		setSearchParams({ delete: id });
+	}
 
 	const columns: TableProps<IincomeDisplay>['columns'] = [
 		{
@@ -81,7 +89,7 @@ const IncomeList = () => {
 			render: (_, record: any) => (
 				<div className="flex items-center space-x-3.5">
 					<EditButton handleClick={() => navigate(`/income/edit/${record._id}`)} />
-					<DeleteButton handleClick={() => { setCurId(record._id); showModal() }} />
+					<DeleteButton handleClick={() => handleModal(record._id)} />
 				</div>
 			),
 		}
