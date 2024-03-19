@@ -21,7 +21,6 @@ const Icategory = () => {
 	const { data: incomeCategorydata, isLoading, isSuccess } = useGetIncomeCategoryQuery({});
 	const [deleteIncomeCategory] = useDeleteIncomeCategoryMutation();
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [curId, setCurId] = useState("");
 	const isDelete = searchParams.get("delete")
 
 	useEffect(() => {
@@ -34,7 +33,6 @@ const Icategory = () => {
 		if (isDelete) {
 			await deleteIncomeCategory({ incomeCategoryId: isDelete }).unwrap().then(res => {
 				if (res.status) {
-					setCurId("");
 					toast.success("deleted...")
 				} else {
 					toast.error(res.message)
