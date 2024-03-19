@@ -1,8 +1,8 @@
 import Breadcrumb from '../../components/common/Breadcrumb'
 import { Table } from 'antd';
 import type { TableProps } from 'antd';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Modal } from 'antd';
 import toast from 'react-hot-toast';
 import { useDeleteIncomeCategoryMutation, useGetIncomeCategoryQuery } from '../../reduxState/apis/incomeCategoryApi';
@@ -17,19 +17,22 @@ interface DataType {
 
 const Icategory = () => {
 	const navigate = useNavigate();
+	const [searchParams, setSearchParams] = useSearchParams();
 	const { data: incomeCategorydata, isLoading, isSuccess } = useGetIncomeCategoryQuery({});
 	const [deleteIncomeCategory] = useDeleteIncomeCategoryMutation();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [curId, setCurId] = useState("");
+	const isDelete = searchParams.get("delete")
 
-
-	const showModal = () => {
-		setIsModalOpen(true);
-	};
+	useEffect(() => {
+		if (isDelete) {
+			setIsModalOpen(true)
+		}
+	}, [searchParams])
 
 	const handleOk = async () => {
-		if (curId) {
-			await deleteIncomeCategory({ incomeCategoryId: curId }).unwrap().then(res => {
+		if (isDelete) {
+			await deleteIncomeCategory({ incomeCategoryId: isDelete }).unwrap().then(res => {
 				if (res.status) {
 					setCurId("");
 					toast.success("deleted...")
@@ -38,15 +41,21 @@ const Icategory = () => {
 				}
 			}).catch(err => {
 				toast.error(err.response.data.error)
+			}).finally(() => {
+				setIsModalOpen(false);
+				setSearchParams('')
 			})
 		}
-		setIsModalOpen(false);
 	};
 
 	const handleCancel = () => {
-		setCurId("");
+		setSearchParams('')
 		setIsModalOpen(false);
 	};
+
+	const handleModal = (id: string) => {
+		setSearchParams({ delete: id });
+	}
 
 	const columns: TableProps<DataType>['columns'] = [
 		{
@@ -67,7 +76,7 @@ const Icategory = () => {
 			render: (_, record: any) => (
 				<div className="flex items-center space-x-3.5">
 					<EditButton handleClick={() => navigate(`/Icategory/edit/${record._id}`)} />
-					<DeleteButton handleClick={() => { setCurId(record._id); showModal() }} />
+					<DeleteButton handleClick={() => handleModal(record._id)} />
 				</div>
 			),
 		},

@@ -16,7 +16,6 @@ const IncomeList = () => {
 	const { data: incomeData, isLoading, isSuccess } = useGetIncomesQuery({});
 	const [deleteIncome] = useDeleteIncomeMutation();
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [curId, setCurId] = useState("");
 	const isDelete = searchParams.get("delete")
 
 	useEffect(() => {
