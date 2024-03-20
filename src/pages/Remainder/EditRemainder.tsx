@@ -4,14 +4,13 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import toast from 'react-hot-toast';
-import { useCreateRemainderMutation, useEditRemainderMutation, useGetRemainderByIdQuery } from '../../reduxState/apis/remainderApi';
+import { useEditRemainderMutation, useGetRemainderByIdQuery } from '../../reduxState/apis/remainderApi';
 import { useEffect } from 'react';
 
 const EditRemainder = () => {
 	const navigate = useNavigate();
 	const { id } = useParams();
 	const { data: reainderData, isSuccess } = useGetRemainderByIdQuery({ remainderId: id });
-	const [createMutation] = useCreateRemainderMutation();
 	const [editRemainder] = useEditRemainderMutation();
 	console.log(reainderData)
 
