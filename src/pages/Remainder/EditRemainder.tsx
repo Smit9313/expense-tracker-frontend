@@ -1,14 +1,19 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Breadcrumb from '../../components/common/Breadcrumb';
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import toast from 'react-hot-toast';
-import { useCreateRemainderMutation } from '../../reduxState/apis/remainderApi';
+import { useCreateRemainderMutation, useEditRemainderMutation, useGetRemainderByIdQuery } from '../../reduxState/apis/remainderApi';
+import { useEffect } from 'react';
 
-const AddRemainder = () => {
+const EditRemainder = () => {
 	const navigate = useNavigate();
+	const { id } = useParams();
+	const { data: reainderData, isSuccess } = useGetRemainderByIdQuery({ remainderId: id });
 	const [createMutation] = useCreateRemainderMutation();
+	const [editRemainder] = useEditRemainderMutation();
+	console.log(reainderData)
 
 	const validationSchema = Yup.object().shape({
 		notificationDate: Yup.date().required("Date is required"),
@@ -16,19 +21,27 @@ const AddRemainder = () => {
 	})
 
 	const formOptions = { resolver: yupResolver(validationSchema) };
-	const { register, handleSubmit, formState } = useForm(formOptions);
+	const { register, handleSubmit, formState, setValue } = useForm(formOptions);
 	const { errors } = formState;
+
+	useEffect(() => {
+		if (isSuccess) {
+			setValue("notificationDate", reainderData.data.notificationDate.split("T")[0])
+			setValue("detail", reainderData.data.detail)
+		}
+	}, [isSuccess])
 
 	const onSubmit = async (data: any) => {
 		data.notificationDate.setDate(data.notificationDate.getDate() + 1)
-		await createMutation(data).unwrap().then(res => {
+		await editRemainder({ remainderId: id,isRead: reainderData.data.isRead,  ...data }).unwrap().then((res: any) => {
+
 			if (res.status) {
 				toast.success(res.message)
 				navigate(-1)
 			} else {
 				toast.error(res.message)
 			}
-		}).catch(err => {
+		}).catch((err: any) => {
 			toast.error(err.response.data.message)
 		})
 	}
@@ -36,7 +49,7 @@ const AddRemainder = () => {
 	return (
 		<>
 			<div className="mx-auto">
-				<Breadcrumb pageName="Add Remainder" />
+				<Breadcrumb pageName="Edit Remainder" />
 				<div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
 					<div className="p-7">
 						<form onSubmit={handleSubmit(onSubmit)}>
@@ -71,7 +84,7 @@ const AddRemainder = () => {
 									{...register("detail")}
 								/>
 								{errors.detail && <p className='text-orange-700'>{errors.detail?.message}</p>}
-							</div>	
+							</div>
 							<div className="flex justify-end gap-4.5">
 								<button
 									type='button'
@@ -96,4 +109,4 @@ const AddRemainder = () => {
 	);
 };
 
-export default AddRemainder;
+export default EditRemainder;

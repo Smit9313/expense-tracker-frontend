@@ -184,3 +184,12 @@ span.flatpickr-weekday,
 ::-webkit-scrollbar-thumb:hover {
   background: #555; /* Adjust the handle color on hover */
 }
+
+.custom-row-class-select {
+  background-color: white; 
+}
+
+.custom-row-class {
+  background-color: #f6f8fc; 
+}
+

@@ -23,6 +23,7 @@ const AddIncomeCategory = lazy(() => import("../pages/Icategory/AddIncomeCategor
 const EditIncomeCategory = lazy(() => import("../pages/Icategory/EditIncomeCategory"));
 const Remainder = lazy(() => import("../pages/Remainder"));
 const AddRemainder = lazy(() => import("../pages/Remainder/AddRemainder"))
+const EditRemainder = lazy(() => import("../pages/Remainder/EditRemainder"))
 
 const coreRoutes = [
   {
@@ -139,6 +140,11 @@ const coreRoutes = [
     path: "/remainders/add",
     title: "Remainder",
     component: AddRemainder,
+  },
+  {
+    path: "/remainders/edit/:id",
+    title: "Remainder",
+    component: EditRemainder,
   },
 ];
 

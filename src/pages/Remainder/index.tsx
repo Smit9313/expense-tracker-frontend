@@ -87,7 +87,7 @@ const Remainder = () => {
 	const editStatus = async (record: any) => {
 		await editRemainder({ remainderId: record._id, detail: record.detail, notificationDate: record.notificationDate, isRead: true }).unwrap().then((res: any) => {
 			if (res.status) {
-				toast.success(res.message)
+				// toast.success(res.message)
 			} else {
 				toast.error(res.message)
 			}
@@ -95,6 +95,13 @@ const Remainder = () => {
 			toast.error(err.response.data.message)
 		})
 	}
+
+	const getRowClassName = (record: any) => {
+		if (record.isRead) {
+			return 'custom-row-class-select';
+		}
+		return 'custom-row-class';
+	};
 
 	return (
 		<>
@@ -120,15 +127,16 @@ const Remainder = () => {
 				<div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
 					<Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} showHeader={true} loading={isLoading}
 						size="small"
-						onRow={(record: any, rowIndex) => {
+						onRow={(record: any) => {
 							return {
-								onDoubleClick: (event: any) => {
+								onDoubleClick: () => {
 									if (!record.isRead) {
 										editStatus(record)
 									}
 								},
 							};
 						}}
+						rowClassName={getRowClassName}
 						title={() => {
 							return <div className="flex justify-between" >
 								<h4 className="mb-6 text-xl font-semibold text-black dark:text-white">

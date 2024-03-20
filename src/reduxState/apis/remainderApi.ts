@@ -45,7 +45,7 @@ export const remainderApi = baseCreateApi.injectEndpoints({
 
 export const {
   useGetRemainderQuery,
-  useLazyGetRemainderByIdQuery,
+  useGetRemainderByIdQuery,
   useCreateRemainderMutation,
   useEditRemainderMutation,
   useDeleteRemainderMutation,
