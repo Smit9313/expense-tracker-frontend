@@ -5,10 +5,9 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Modal } from 'antd';
 import toast from 'react-hot-toast';
-import { useDeleteIncomeCategoryMutation, useGetIncomeCategoryQuery } from '../../reduxState/apis/incomeCategoryApi';
 import EditButton from '../../components/buttons/EditButton';
 import DeleteButton from '../../components/buttons/DeleteButton';
-import { Iicategory } from '../../interfaces/icategory/Iicategory';
+import { useDeleteRemainderMutation, useEditRemainderMutation, useGetRemainderQuery } from '../../reduxState/apis/remainderApi';
 
 interface DataType {
 	key: string;
@@ -18,8 +17,9 @@ interface DataType {
 const Remainder = () => {
 	const navigate = useNavigate();
 	const [searchParams, setSearchParams] = useSearchParams();
-	const { data: incomeCategorydata, isLoading, isSuccess } = useGetIncomeCategoryQuery({});
-	const [deleteIncomeCategory] = useDeleteIncomeCategoryMutation();
+	const { data: remainderData, isLoading, isSuccess } = useGetRemainderQuery({});
+	const [editRemainder] = useEditRemainderMutation();
+	const [deleteRemainder] = useDeleteRemainderMutation();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const isDelete = searchParams.get("delete")
 
@@ -31,7 +31,7 @@ const Remainder = () => {
 
 	const handleOk = async () => {
 		if (isDelete) {
-			await deleteIncomeCategory({ incomeCategoryId: isDelete }).unwrap().then(res => {
+			await deleteRemainder({ remainderId: isDelete }).unwrap().then(res => {
 				if (res.status) {
 					toast.success("deleted...")
 				} else {
@@ -57,15 +57,15 @@ const Remainder = () => {
 
 	const columns: TableProps<DataType>['columns'] = [
 		{
-			title: 'Name',
-			dataIndex: 'name',
-			key: 'name',
-			render: (text) => <p>{text}</p>
+			title: 'Date',
+			dataIndex: 'notificationDate',
+			key: 'notificationDate',
+			render: (text) => <p>{text.split("T")[0]}</p>
 		},
 		{
-			title: 'Total Income',
-			dataIndex: 'totalIncome',
-			key: 'totalIncome',
+			title: 'Detail',
+			dataIndex: 'detail',
+			key: 'detail',
 			render: (text) => <p>{text}</p>
 		},
 		{
@@ -73,20 +73,32 @@ const Remainder = () => {
 			key: 'action',
 			render: (_, record: any) => (
 				<div className="flex items-center space-x-3.5">
-					<EditButton handleClick={() => navigate(`/Icategory/edit/${record._id}`)} />
+					<EditButton handleClick={() => navigate(`/remainders/edit/${record._id}`)} />
 					<DeleteButton handleClick={() => handleModal(record._id)} />
 				</div>
 			),
 		},
 	];
 
-	const data: DataType[] = isSuccess ? incomeCategorydata.map((val: Iicategory, index: number) => {
+	const data: DataType[] = isSuccess ? remainderData.data.map((val: any, index: number) => {
 		return { ...val, key: index.toString() }
 	}) : []
 
+	const editStatus = async (record: any) => {
+		await editRemainder({ remainderId: record._id, detail: record.detail, notificationDate: record.notificationDate, isRead: true }).unwrap().then((res: any) => {
+			if (res.status) {
+				toast.success(res.message)
+			} else {
+				toast.error(res.message)
+			}
+		}).catch((err: any) => {
+			toast.error(err.response.data.message)
+		})
+	}
+
 	return (
 		<>
-			<Modal title="Are you sure you want to delete this category?" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={
+			<Modal title="Are you sure you want to delete this record?" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={
 				<div className="flex justify-end gap-4.5">
 					<button
 						className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-black"
@@ -106,21 +118,32 @@ const Remainder = () => {
 			<Breadcrumb pageName="Remainders" />
 			<div className="flex flex-col gap-10">
 				<div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-					<Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} showHeader={true} loading={isLoading} title={() => {
-						return <div className="flex justify-between" >
-							<h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
-								{/* Top Channels */}
-							</h4>
-							<div className=''>
-								<button
-									className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-70"
-									onClick={() => navigate("/Icategory/add")}
-								>
-									+ Add
-								</button>
+					<Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} showHeader={true} loading={isLoading}
+						size="small"
+						onRow={(record: any, rowIndex) => {
+							return {
+								onDoubleClick: (event: any) => {
+									if (!record.isRead) {
+										editStatus(record)
+									}
+								},
+							};
+						}}
+						title={() => {
+							return <div className="flex justify-between" >
+								<h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
+									{/* Top Channels */}
+								</h4>
+								<div className=''>
+									<button
+										className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-70"
+										onClick={() => navigate("/remainders/add")}
+									>
+										+ Add
+									</button>
+								</div>
 							</div>
-						</div>
-					}} scroll={{ x: 800 }} />
+						}} scroll={{ x: 800 }} />
 				</div>
 			</div>
 		</>

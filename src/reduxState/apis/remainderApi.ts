@@ -4,7 +4,7 @@ export const remainderApi = baseCreateApi.injectEndpoints({
   endpoints: (builder) => ({
     getRemainder: builder.query({
       query: () => ({
-        url: "remainder",
+        url: "notification",
         method: "GET",
       }),
       providesTags: ["remainder"],
@@ -12,29 +12,29 @@ export const remainderApi = baseCreateApi.injectEndpoints({
     }),
     getRemainderById: builder.query({
       query: (queryArgs) => ({
-        url: `remainder/${queryArgs.remainderId}`,
+        url: `notification/${queryArgs.remainderId}`,
         method: "GET",
       }),
       providesTags: ["remainder"],
     }),
     createRemainder: builder.mutation({
       query: (queryArgs) => ({
-        url: "remainder",
+        url: "notification",
         method: "POST",
         body: queryArgs,
       }),
     }),
     editRemainder: builder.mutation({
       query: (queryArgs) => ({
-        url: `remainder/${queryArgs.remainderId}`,
-        method: "PATCH",
+        url: `notification/${queryArgs.remainderId}`,
+        method: "PATCH",  
         body: queryArgs,
       }),
       invalidatesTags: ["remainder"],
     }),
     deleteRemainder: builder.mutation({
       query: (queryArgs) => ({
-        url: `remainder/${queryArgs.remainderId}`,
+        url: `notification/${queryArgs.remainderId}`,
         method: "DELETE",
         body: queryArgs,
       }),
@@ -44,7 +44,7 @@ export const remainderApi = baseCreateApi.injectEndpoints({
 });
 
 export const {
-  useLazyGetRemainderQuery,
+  useGetRemainderQuery,
   useLazyGetRemainderByIdQuery,
   useCreateRemainderMutation,
   useEditRemainderMutation,

@@ -17,19 +17,12 @@ const AddIncome = lazy(() => import("../pages/Income/AddIncome"));
 const EditIncome = lazy(() => import("../pages/Income/EditIncome"));
 const Ecategory = lazy(() => import("../pages/Ecategory"));
 const Icategory = lazy(() => import("../pages/Icategory"));
-const AddExpenseCategory = lazy(
-  () => import("../pages/Ecategory/AddExpenseCategory")
-);
-const EditExpenseCategory = lazy(
-  () => import("../pages/Ecategory/EditExpenseCategory")
-);
-const AddIncomeCategory = lazy(
-  () => import("../pages/Icategory/AddIncomeCategory")
-);
-const EditIncomeCategory = lazy(
-  () => import("../pages/Icategory/EditIncomeCategory")
-);
+const AddExpenseCategory = lazy(() => import("../pages/Ecategory/AddExpenseCategory"));
+const EditExpenseCategory = lazy(() => import("../pages/Ecategory/EditExpenseCategory"));
+const AddIncomeCategory = lazy(() => import("../pages/Icategory/AddIncomeCategory"));
+const EditIncomeCategory = lazy(() => import("../pages/Icategory/EditIncomeCategory"));
 const Remainder = lazy(() => import("../pages/Remainder"));
+const AddRemainder = lazy(() => import("../pages/Remainder/AddRemainder"))
 
 const coreRoutes = [
   {
@@ -141,6 +134,11 @@ const coreRoutes = [
     path: "/remainders",
     title: "Remainder",
     component: Remainder,
+  },
+  {
+    path: "/remainders/add",
+    title: "Remainder",
+    component: AddRemainder,
   },
 ];
 
