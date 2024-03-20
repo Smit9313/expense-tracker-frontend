@@ -1,13 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Cookies from "js-cookie";
 
 import UserOne from '../../images/user/user-01.png';
-import { useLazyGoogleAuthLogoutQuery } from '../../reduxState/apis/authApi';
+import { useUserQuery } from '../../reduxState/apis/authApi';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [googleAuthLogout] = useLazyGoogleAuthLogoutQuery()
+  const {data } = useUserQuery({})
 
   const navigate = useNavigate();
   const trigger = useRef<any>(null);
@@ -55,9 +54,9 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Anree
+            {data?.data?.username}
           </span>
-          <span className="block text-xs">UX Designer</span>
+          {/* <span className="block text-xs">UX Designer</span> */}
         </span>
 
         <span className="h-12 w-12 rounded-full">
