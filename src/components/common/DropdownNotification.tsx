@@ -63,9 +63,8 @@ const DropdownNotification = () => {
         ref={dropdown}
         onFocus={() => setDropdownOpen(true)}
         onBlur={() => setDropdownOpen(false)}
-        className={`absolute -right-27 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark sm:right-0 sm:w-80 ${
-          dropdownOpen === true ? 'block' : 'hidden'
-        }`}
+        className={`absolute -right-27 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark sm:right-0 sm:w-80 ${dropdownOpen === true ? 'block' : 'hidden'
+          }`}
       >
         <div className="px-4.5 py-3">
           <h5 className="text-sm font-medium text-bodydark2">Notification</h5>
@@ -88,7 +87,7 @@ const DropdownNotification = () => {
               <p className="text-xs">12 May, 2025</p>
             </Link>
           </li>
-          <li>
+          <li style={{ display: "flex" }}>
             <Link
               className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
               to="#"
@@ -99,8 +98,10 @@ const DropdownNotification = () => {
                 </span>{' '}
                 that a reader will be distracted by the readable.
               </p>
-
-              <p className="text-xs">24 Feb, 2025</p>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <p className="">24 Feb, 2025</p>
+                <p>read</p>
+              </div>
             </Link>
           </li>
           <li>

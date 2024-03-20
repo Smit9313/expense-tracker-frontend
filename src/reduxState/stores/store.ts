@@ -19,7 +19,7 @@ const persistConfig = {
   key: "root",
   version: 4,
   storage,
-  whitelist: ["user", "expeneseCategory", "expense", "incomeCategory", "incomes"],
+  whitelist: ["user", "expeneseCategory", "expense", "incomeCategory", "incomes", "remainder"],
 };
 
 const reducers = combineReducers({

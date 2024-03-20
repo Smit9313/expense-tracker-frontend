@@ -58,7 +58,7 @@ const baseQueryWithReauth: BaseQueryFn<
 
 const baseCreateApi = createApi({
   reducerPath: "api",
-  tagTypes: ['expenseCategory', 'incomeCategory', 'expense', 'income'],
+  tagTypes: ['expenseCategory', 'incomeCategory', 'expense', 'income', 'remainder'],
   baseQuery: retry(baseQueryWithReauth, { maxRetries: 0 }),
   endpoints: () => ({}),
 });
