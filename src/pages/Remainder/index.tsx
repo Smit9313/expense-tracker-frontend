@@ -60,13 +60,13 @@ const Remainder = () => {
 			title: 'Date',
 			dataIndex: 'notificationDate',
 			key: 'notificationDate',
-			render: (text) => <p>{text.split("T")[0]}</p>
+			render: (text) => <p style={{width: "200px"}}>{text.split("T")[0]}</p>
 		},
 		{
 			title: 'Detail',
 			dataIndex: 'detail',
 			key: 'detail',
-			render: (text) => <p>{text}</p>
+			render: (text) => <p style={{width: "600px"}}>{text}</p>
 		},
 		{
 			title: 'Action',

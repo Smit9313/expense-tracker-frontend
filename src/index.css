@@ -186,10 +186,11 @@ span.flatpickr-weekday,
 }
 
 .custom-row-class-select {
-  background-color: white; 
+  background-color: white;
 }
 
 .custom-row-class {
   background-color: #f6f8fc; 
+  font-weight: 600;
 }
 

@@ -23,6 +23,7 @@ export const remainderApi = baseCreateApi.injectEndpoints({
         method: "POST",
         body: queryArgs,
       }),
+      invalidatesTags: ["remainder"],
     }),
     editRemainder: builder.mutation({
       query: (queryArgs) => ({

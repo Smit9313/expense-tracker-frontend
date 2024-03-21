@@ -18,3 +18,25 @@ export function getCookie(name: string) {
   }
   return null;
 }
+
+// export function formatISODate(dateString: string) {
+//   const dateObj = new Date(dateString);
+//   const options: any = { year: 'numeric', month: 'short', day: '2-digit' };
+//   return dateObj.toLocaleDateString('en-IN', options);
+// }
+
+export function formatISODate(dateString: string) {
+  const dateObj = new Date(dateString);
+  
+  // Define Indian month names
+  const indianMonthNames = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ];
+  
+  const day = dateObj.getDate();
+  const month = indianMonthNames[dateObj.getMonth()];
+  const year = dateObj.getFullYear();
+
+  return `${day} ${month}, ${year}`;
+}
