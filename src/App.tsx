@@ -12,7 +12,7 @@ import { useLazyGoogleAuthQuery } from './reduxState/apis/authApi';
 const DefaultLayout = lazy(() => import('./layout/DefaultLayout'));
 
 function App() {
-  const [googleAuth] = useLazyGoogleAuthQuery({})
+  const [googleAuth] = useLazyGoogleAuthQuery({});
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
 
@@ -21,18 +21,20 @@ function App() {
     const token = localStorage.getItem('token');
 
     const getUser = () => {
-      googleAuth({}).unwrap().then((res: any) => {
-        if (res.status) {
-          localStorage.setItem("token", res.data.token);
-          navigate("/")
-        } else {
-          navigate("auth/signin", { state: {res} });
-        }
-      })
-    }
+      googleAuth({})
+        .unwrap()
+        .then((res: any) => {
+          if (res.status) {
+            localStorage.setItem('token', res.data.token);
+            navigate('/');
+          } else {
+            navigate('auth/signin', { state: { res } });
+          }
+        });
+    };
 
     if (!token) {
-      getUser()
+      getUser();
     } else {
     }
   }, []);
