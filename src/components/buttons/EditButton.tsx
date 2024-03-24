@@ -1,5 +1,5 @@
 
-const EditButton = ({ handleClick }: { handleClick: any }) => {
+const EditButton = ({ handleClick }: { handleClick?: any }) => {
 	return (
 		<button className="hover:text-primary" onClick={handleClick}>
 			<svg

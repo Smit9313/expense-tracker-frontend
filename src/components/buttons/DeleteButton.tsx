@@ -1,5 +1,5 @@
 
-const DeleteButton = ({ handleClick }: { handleClick: any }) => {
+const DeleteButton = ({ handleClick }: { handleClick?: any }) => {
 	return (
 		<button className="hover:text-primary" onClick={handleClick}>
 			<svg

@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useEditRemainderMutation, useGetRemainderQuery } from '../../reduxState/apis/remainderApi';
+import {
+  useEditRemainderMutation,
+  useGetRemainderQuery,
+} from '../../reduxState/apis/remainderApi';
 import toast from 'react-hot-toast';
 import { Badge } from 'antd';
 
@@ -39,18 +42,27 @@ const DropdownNotification = () => {
   });
 
   const handleStatus = async (record: any) => {
-    await editRemainder({ remainderId: record._id, detail: record.detail, notificationDate: record.notificationDate, isRead: true }).unwrap().then((res: any) => {
-      if (res.status) {
-        // toast.success(res.message)
-      } else {
-        toast.error(res.message)
-      }
-    }).catch((err: any) => {
-      toast.error(err.response.data.message)
+    await editRemainder({
+      remainderId: record._id,
+      detail: record.detail,
+      notificationDate: record.notificationDate,
+      isRead: true,
     })
-  }
+      .unwrap()
+      .then((res: any) => {
+        if (res.status) {
+          // toast.success(res.message)
+        } else {
+          toast.error(res.message);
+        }
+      })
+      .catch((err: any) => {
+        toast.error(err.response.data.message);
+      });
+  };
 
-  const notificationsData = isSuccess && remainderData.data.filter((val: any) => !val.isRead);
+  const notificationsData =
+    isSuccess && remainderData.data.filter((val: any) => !val.isRead);
 
   return (
     <li className="relative">
@@ -81,34 +93,50 @@ const DropdownNotification = () => {
         ref={dropdown}
         onFocus={() => setDropdownOpen(true)}
         onBlur={() => setDropdownOpen(false)}
-        className={`absolute -right-27 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark sm:right-0 sm:w-80 ${dropdownOpen === true ? 'block' : 'hidden'
-          }`}
+        className={`absolute -right-27 mt-2.5 flex w-75 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark sm:right-0 sm:w-80 ${
+          dropdownOpen === true ? 'block' : 'hidden'
+        } ${notificationsData.length ? 'h-90' : 'h-15'}`}
       >
-        <div className="px-4.5 py-3">
-          <h5 className="text-sm font-medium text-bodydark2">Notification</h5>
-        </div>
+        {notificationsData.length ? (
+          <div className="px-4.5 py-3">
+            <h5 className="text-sm font-medium text-bodydark2">Notification</h5>
+          </div>
+        ) : (
+          <div className="px-4.5 py-3">
+            <h5 className="text-sm font-medium text-bodydark2">
+              No new notifications
+            </h5>
+          </div>
+        )}
 
         <ul className="flex h-auto flex-col overflow-y-auto">
-          {isSuccess && notificationsData.map((val: any) => {
-            return <li key={val._id}>
-              <Link
-                className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                to="#"
-              >
-                <p className="text-sm">
-                  <span className="text-black dark:text-white">
-                    {val.detail}
-                  </span>
-                </p>
+          {isSuccess &&
+            notificationsData.map((val: any) => {
+              return (
+                <li key={val._id}>
+                  <Link
+                    className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                    to="#"
+                  >
+                    <p className="text-sm">
+                      <span className="text-black dark:text-white">
+                        {val.detail}
+                      </span>
+                    </p>
 
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <p className="">{formatISODate(val.notificationDate)}</p>
-                  <p onClick={() => handleStatus(val)}>read</p>
-                </div>
-              </Link>
-            </li>
-          })
-          }
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <p className="">{formatISODate(val.notificationDate)}</p>
+                      <p onClick={() => handleStatus(val)}>read</p>
+                    </div>
+                  </Link>
+                </li>
+              );
+            })}
         </ul>
       </div>
     </li>
