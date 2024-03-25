@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
+import * as Yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
 import { useRegisterUserMutation } from '../../reduxState/apis/authApi';
@@ -10,34 +10,61 @@ import { ISignup } from '../../interfaces/auth/ISignup';
 import UserSvg from '../../components/svgs/UserSvg';
 import EmailSvg from '../../components/svgs/EmailSvg';
 import LockSvg from '../../components/svgs/LockSvg';
+import GoogleSvg from '../../components/svgs/GoogleSvg';
+import { useState } from 'react';
 
 const SignUp = () => {
   const navigate = useNavigate();
   const [registerUser] = useRegisterUserMutation();
+  const [imageLoading, setImageLoading] = useState(false);
+
   const validationSchema = Yup.object().shape({
-    username: Yup.string().required("Name is required"),
-    email: Yup.string().email("Email is invalid").required("Email is required"),
+    username: Yup.string().required('Name is required'),
+    email: Yup.string().email('Email is invalid').required('Email is required'),
     password: Yup.string()
-      .required("Password is required")
-      .min(5, "Password must be at least 5 characters"),
+      .required('Password is required')
+      .min(5, 'Password must be at least 5 characters'),
   });
   const formOptions = { resolver: yupResolver(validationSchema) };
   const { register, handleSubmit, formState } = useForm(formOptions);
   const { errors } = formState;
 
   const onSubmit = async (data: ISignup) => {
-    await registerUser(data).unwrap().then((res) => {
-      console.log(res)
-      if (res.status) {
-        toast.success(res.message)
-        navigate("/auth/signin")
-      } else {
-        toast.error(res.message)
-      }
-    }).catch((err: any) => {
-      toast.error(err.response.data.message)
+    await registerUser(data)
+      .unwrap()
+      .then((res) => {
+        console.log(res);
+        if (res.status) {
+          toast.success(res.message);
+          navigate('/auth/signin');
+        } else {
+          toast.error(res.message);
+        }
+      })
+      .catch((err: any) => {
+        toast.error(err.response.data.message);
+      });
+  };
+
+  const handleImageUpload = (e: any) => {
+    setImageLoading(true);
+    const data = new FormData();
+    data.append('image', e.target.files[0]);
+
+    fetch('http://localhost:8080/image-upload', {
+      method: 'post',
+      body: data,
     })
-  }
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setImageLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setImageLoading(false);
+      });
+  };
 
   return (
     <div className="rounded-sm border m-8 border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -65,13 +92,17 @@ const SignUp = () => {
                     type="text"
                     placeholder="Enter your full name"
                     className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                    {...register("username")}
+                    {...register('username')}
                   />
 
                   <span className="absolute right-4 top-4">
                     <UserSvg />
                   </span>
-                  {errors.username && <p className='text-orange-700'>{errors.username?.message}</p>}
+                  {errors.username && (
+                    <p className="text-orange-700">
+                      {errors.username?.message}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -84,13 +115,15 @@ const SignUp = () => {
                     type="email"
                     placeholder="Enter your email"
                     className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                    {...register("email")}
+                    {...register('email')}
                   />
 
                   <span className="absolute right-4 top-4">
                     <EmailSvg />
                   </span>
-                  {errors.email && <p className='text-orange-700'>{errors.email?.message}</p>}
+                  {errors.email && (
+                    <p className="text-orange-700">{errors.email?.message}</p>
+                  )}
                 </div>
               </div>
 
@@ -103,57 +136,50 @@ const SignUp = () => {
                     type="password"
                     placeholder="Enter your password"
                     className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                    {...register("password")}
+                    {...register('password')}
                   />
 
                   <span className="absolute right-4 top-4">
                     <LockSvg />
                   </span>
-                  {errors.password && <p className='text-orange-700'>{errors.password?.message}</p>}
+                  {errors.password && (
+                    <p className="text-orange-700">
+                      {errors.password?.message}
+                    </p>
+                  )}
                 </div>
               </div>
 
-              <div className="mb-5">
+              <div className="mb-4">
+                <label className="mb-2.5 block font-medium text-black dark:text-white">
+                  Profile Image
+                </label>
                 <input
-                  type="submit"
-                  value="Create account"
-                  className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
                 />
+              </div>
+
+              <div className="mb-5">
+                <br />
+                {imageLoading ? (
+                  <div className="flex items-center justify-center w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90">
+                    <span className="h-7 w-7 animate-spin rounded-full border-4 border-solid border-slate-200 border-t-transparent"></span>
+                  </div>
+                ) : (
+                  <input
+                    type="submit"
+                    value="Create account"
+                    className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
+                  />
+                )}
               </div>
 
               <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
                 <span>
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g clipPath="url(#clip0_191_13499)">
-                      <path
-                        d="M19.999 10.2217C20.0111 9.53428 19.9387 8.84788 19.7834 8.17737H10.2031V11.8884H15.8266C15.7201 12.5391 15.4804 13.162 15.1219 13.7195C14.7634 14.2771 14.2935 14.7578 13.7405 15.1328L13.7209 15.2571L16.7502 17.5568L16.96 17.5774C18.8873 15.8329 19.9986 13.2661 19.9986 10.2217"
-                        fill="#4285F4"
-                      />
-                      <path
-                        d="M10.2055 19.9999C12.9605 19.9999 15.2734 19.111 16.9629 17.5777L13.7429 15.1331C12.8813 15.7221 11.7248 16.1333 10.2055 16.1333C8.91513 16.1259 7.65991 15.7205 6.61791 14.9745C5.57592 14.2286 4.80007 13.1801 4.40044 11.9777L4.28085 11.9877L1.13101 14.3765L1.08984 14.4887C1.93817 16.1456 3.24007 17.5386 4.84997 18.5118C6.45987 19.4851 8.31429 20.0004 10.2059 19.9999"
-                        fill="#34A853"
-                      />
-                      <path
-                        d="M4.39899 11.9777C4.1758 11.3411 4.06063 10.673 4.05807 9.99996C4.06218 9.32799 4.1731 8.66075 4.38684 8.02225L4.38115 7.88968L1.19269 5.4624L1.0884 5.51101C0.372763 6.90343 0 8.4408 0 9.99987C0 11.5589 0.372763 13.0963 1.0884 14.4887L4.39899 11.9777Z"
-                        fill="#FBBC05"
-                      />
-                      <path
-                        d="M10.2059 3.86663C11.668 3.84438 13.0822 4.37803 14.1515 5.35558L17.0313 2.59996C15.1843 0.901848 12.7383 -0.0298855 10.2059 -3.6784e-05C8.31431 -0.000477834 6.4599 0.514732 4.85001 1.48798C3.24011 2.46124 1.9382 3.85416 1.08984 5.51101L4.38946 8.02225C4.79303 6.82005 5.57145 5.77231 6.61498 5.02675C7.65851 4.28118 8.9145 3.87541 10.2059 3.86663Z"
-                        fill="#EB4335"
-                      />
-                    </g>
-                    <defs>
-                      <clipPath id="clip0_191_13499">
-                        <rect width="20" height="20" fill="white" />
-                      </clipPath>
-                    </defs>
-                  </svg>
+                  <GoogleSvg />
                 </span>
                 Sign up with Google
               </button>
