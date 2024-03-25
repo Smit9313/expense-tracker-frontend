@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import rootReducer from "./rootReducer";
 // import { actionListenerEnhancer } from "../enhancers/actionListener";
 import baseCreateApi from "../apis/baseCreateApi";
+import { authApi } from '../apis/authApi';
 
 const persistConfig = {
   key: "root",
@@ -37,7 +38,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(baseCreateApi.middleware),
+    }).concat(baseCreateApi.middleware).concat(authApi.middleware),
 });
 
 export const persistor = persistStore(store);

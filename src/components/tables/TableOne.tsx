@@ -1,5 +1,3 @@
-import Loader from '../../common/Loader';
-
 const TableOne = ({
   dataSource,
   columns,
@@ -9,7 +7,6 @@ const TableOne = ({
   columns: any;
   loading: boolean;
 }) => {
-  console.log(dataSource, columns);
   return (
     <div className="max-w-full overflow-x-auto">
       <table className="w-full table-auto">

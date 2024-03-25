@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import toast from 'react-hot-toast';
 
-import { useRegisterMutation } from '../../reduxState/apis/authApiV1';
+import { useRegisterUserMutation } from '../../reduxState/apis/authApi';
 import AuthSvg from '../../components/svgs/AuthSvg';
 import { ISignup } from '../../interfaces/auth/ISignup';
 import UserSvg from '../../components/svgs/UserSvg';
@@ -13,7 +13,7 @@ import LockSvg from '../../components/svgs/LockSvg';
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const [registerUser] = useRegisterMutation();
+  const [registerUser] = useRegisterUserMutation();
   const validationSchema = Yup.object().shape({
     username: Yup.string().required("Name is required"),
     email: Yup.string().email("Email is invalid").required("Email is required"),
@@ -27,6 +27,7 @@ const SignUp = () => {
 
   const onSubmit = async (data: ISignup) => {
     await registerUser(data).unwrap().then((res) => {
+      console.log(res)
       if (res.status) {
         toast.success(res.message)
         navigate("/auth/signin")
