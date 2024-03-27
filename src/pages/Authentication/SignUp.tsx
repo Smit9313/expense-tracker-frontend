@@ -24,16 +24,17 @@ const SignUp = () => {
     password: Yup.string()
       .required('Password is required')
       .min(5, 'Password must be at least 5 characters'),
+    profilePic: Yup.string().required('Profile image is required'),
   });
   const formOptions = { resolver: yupResolver(validationSchema) };
-  const { register, handleSubmit, formState } = useForm(formOptions);
+  const { register, handleSubmit, formState, setValue } = useForm(formOptions);
   const { errors } = formState;
 
   const onSubmit = async (data: ISignup) => {
+    console.log(data)
     await registerUser(data)
       .unwrap()
       .then((res) => {
-        console.log(res);
         if (res.status) {
           toast.success(res.message);
           navigate('/auth/signin');
@@ -56,8 +57,13 @@ const SignUp = () => {
       body: data,
     })
       .then((res) => res.json())
-      .then((data) => {
+      .then((res) => {
         console.log(data);
+        if (res.status) {
+          setValue('profilePic', res.data.imageUrl);
+        } else {
+          toast.error(res.message);
+        }
         setImageLoading(false);
       })
       .catch((err) => {
