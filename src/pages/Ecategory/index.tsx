@@ -1,4 +1,3 @@
-import { Table } from 'antd';
 import type { TableProps } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -14,6 +13,7 @@ import EditButton from '../../components/buttons/EditButton';
 import DeleteButton from '../../components/buttons/DeleteButton';
 import { Iecategory } from '../../interfaces/ecategory/Iecategory';
 import TableOne from '../../components/tables/TableOne';
+import Pagination from '../../components/pagination/Pagination';
 
 const Ecategory = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -80,7 +80,6 @@ const Ecategory = () => {
       title: 'Action',
       key: 'action',
       render: (_, record: Iecategory) => {
-        console.log(record);
         return (
           <div className="flex items-center space-x-3.5">
             <EditButton
@@ -138,6 +137,7 @@ const Ecategory = () => {
             </div>
           </div>
           <TableOne dataSource={data} columns={columns} loading={isLoading} />
+          <Pagination />
         </div>
       </div>
     </>

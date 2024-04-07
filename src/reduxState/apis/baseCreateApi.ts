@@ -19,7 +19,7 @@ const baseQuery = fetchBaseQuery({
     // headers.set("Content-Type", "application/vnd.api+json");
 
     const accessToken = getToken();
-    if (accessToken) {
+    if (accessToken) {  
       headers.set("Authorization", accessToken);
     }
 
