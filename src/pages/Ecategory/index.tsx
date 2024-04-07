@@ -14,6 +14,7 @@ import DeleteButton from '../../components/buttons/DeleteButton';
 import { Iecategory } from '../../interfaces/ecategory/Iecategory';
 import TableOne from '../../components/tables/TableOne';
 import Pagination from '../../components/pagination/Pagination';
+import TableHeader from '../../components/tables/TableHeader';
 
 const Ecategory = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -98,6 +99,10 @@ const Ecategory = () => {
       })
     : [];
 
+  const handleExportClick = () => {
+    
+  };
+
   return (
     <>
       <Modal
@@ -125,17 +130,11 @@ const Ecategory = () => {
       <Breadcrumb pageName="Expense Category" />
       <div className="flex flex-col gap-10">
         <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-20 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-10">
-          <div className="flex justify-between h-20">
-            <div></div>
-            <div className="">
-              <button
-                className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-70"
-                onClick={() => navigate('/Ecategory/add')}
-              >
-                + Add
-              </button>
-            </div>
-          </div>
+          <TableHeader
+            navigateTo={'/Ecategory/add'}
+            eName="hello"
+            handleExportClick={handleExportClick}
+          />
           <TableOne dataSource={data} columns={columns} loading={isLoading} />
           <Pagination />
         </div>
